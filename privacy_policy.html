@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>プライバシーポリシー | バカラパターン統計学習システム</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1f36 0%, #2d3748 100%);
+            color: white;
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 107, 107, 0.15) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .title {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4, #45b7d1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #cbd5e0;
+            font-weight: 500;
+        }
+
+        .content-card {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ff6b6b);
+            background-size: 300% 100%;
+            animation: borderFlow 3s ease-in-out infinite;
+        }
+
+        @keyframes borderFlow {
+            0%, 100% { background-position: 0% 0%; }
+            50% { background-position: 200% 0%; }
+        }
+
+        .section {
+            margin-bottom: 35px;
+        }
+
+        .section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #4facfe;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-content {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-content p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        .section-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-content ul {
+            padding-left: 20px;
+            margin: 15px 0;
+        }
+
+        .section-content li {
+            margin-bottom: 8px;
+            color: #cbd5e0;
+        }
+
+        .highlight {
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(107, 114, 128, 0.3);
+            margin-top: 30px;
+        }
+
+        .back-button:hover {
+            background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(107, 114, 128, 0.4);
+            text-decoration: none;
+            color: white;
+        }
+
+        .important-notice {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.15) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .important-notice h3 {
+            color: #34d399;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .important-notice p {
+            margin-bottom: 10px;
+            line-height: 1.8;
+        }
+
+        .important-notice strong {
+            color: #10b981;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+
+            .content-card {
+                padding: 25px;
+            }
+
+            .title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">プライバシーポリシー</h1>
+            <p class="subtitle">バカラパターン統計学習システム</p>
+        </div>
+
+        <div class="content-card">
+            <!-- サービスの性質について -->
+            <div class="important-notice">
+                <h3>サービスの性質について</h3>
+                <p>
+                    <strong>本サービスは統計学習・教育目的のシミュレーションツールです。</strong>
+                    実際の賭博行為や金銭の授受は一切行いません。バカラゲームのパターン分析手法を学習するための教材として提供しております。
+                </p>
+            </div>
+
+            <!-- 個人情報の取り扱い -->
+            <div class="section">
+                <h2 class="section-title">個人情報の取り扱いについて</h2>
+                <div class="section-content">
+                    <p>
+                        【事業者名】（以下「当社」）は、バカラパターン統計学習システム（以下「本サービス」）の提供にあたり、
+                        ユーザーの皆様の個人情報の保護を重要な責務と考え、以下のプライバシーポリシーを定めます。
+                    </p>
+                </div>
+            </div>
+
+            <!-- 取得する個人情報 -->
+            <div class="section">
+                <h2 class="section-title">取得する個人情報</h2>
+                <div class="section-content">
+                    <p><strong class="highlight">1. Googleアカウント連携による情報</strong></p>
+                    <ul>
+                        <li>Googleアカウントのメールアドレス</li>
+                        <li>Googleアカウントの表示名</li>
+                        <li>Googleアカウントのプロフィール画像URL</li>
+                    </ul>
+
+                    <p><strong class="highlight">2. サービス利用状況データ</strong></p>
+                    <ul>
+                        <li>学習進捗データ</li>
+                        <li>統計分析結果の履歴</li>
+                        <li>システム利用ログ</li>
+                        <li>言語・通貨設定等の環境設定</li>
+                    </ul>
+
+                    <p><strong class="highlight">3. 決済関連情報</strong></p>
+                    <ul>
+                        <li>Stripeを通じた決済処理情報（当社では保存しません）</li>
+                        <li>サブスクリプション契約状況</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 個人情報の利用目的 -->
+            <div class="section">
+                <h2 class="section-title">個人情報の利用目的</h2>
+                <div class="section-content">
+                    <ul>
+                        <li>本サービスの提供・運営</li>
+                        <li>ユーザー認証・ログイン機能の提供</li>
+                        <li>学習進捗の保存・管理</li>
+                        <li>統計分析機能の個人カスタマイズ</li>
+                        <li>サービス改善のためのデータ分析</li>
+                        <li>お客様サポート対応</li>
+                        <li>重要なお知らせの配信</li>
+                        <li>不正利用防止・セキュリティ確保</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 個人情報の管理・保護 -->
+            <div class="section">
+                <h2 class="section-title">個人情報の管理・保護</h2>
+                <div class="section-content">
+                    <p>
+                        当社は、取得した個人情報について、適切なセキュリティ対策を実施し、
+                        不正アクセス、漏洩、改ざん、紛失等を防止するため、以下の対策を講じています。
+                    </p>
+                    <ul>
+                        <li>SSL/TLSによる通信の暗号化</li>
+                        <li>アクセス制御・認証システムの導入</li>
+                        <li>定期的なセキュリティ監査の実施</li>
+                        <li>従業員に対する適切な教育・研修</li>
+                        <li>クラウドサービス（AWS等）の利用によるセキュア環境の確保</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 第三者提供について -->
+            <div class="section">
+                <h2 class="section-title">第三者への提供について</h2>
+                <div class="section-content">
+                    <p>
+                        当社は、以下の場合を除き、ユーザーの個人情報を第三者に提供することはありません。
+                    </p>
+                    <ul>
+                        <li>ユーザーご本人の同意がある場合</li>
+                        <li>法令に基づく場合</li>
+                        <li>人の生命、身体又は財産の保護のために必要がある場合</li>
+                        <li>サービス提供のために必要な業務委託先への提供（適切な管理下での提供）</li>
+                    </ul>
+
+                    <p><strong class="highlight">外部サービスの利用</strong></p>
+                    <p>本サービスでは以下の外部サービスを利用しており、それぞれのプライバシーポリシーが適用されます。</p>
+                    <ul>
+                        <li>Google Sign-In（ユーザー認証）</li>
+                        <li>Stripe（決済処理）</li>
+                        <li>AWS（データホスティング）</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Cookie・アクセス解析 -->
+            <div class="section">
+                <h2 class="section-title">Cookie・アクセス解析について</h2>
+                <div class="section-content">
+                    <p>
+                        本サービスでは、サービスの利便性向上とアクセス解析のため、
+                        Cookie及び類似の技術を使用する場合があります。
+                    </p>
+                    <ul>
+                        <li>ログイン状態の維持</li>
+                        <li>ユーザー設定の保存</li>
+                        <li>サービス利用状況の分析</li>
+                    </ul>
+                    <p>
+                        Cookieの使用を望まない場合は、ブラウザの設定により無効にすることができますが、
+                        一部機能が制限される可能性があります。
+                    </p>
+                </div>
+            </div>
+
+            <!-- 個人情報の開示・訂正・削除 -->
+            <div class="section">
+                <h2 class="section-title">個人情報の開示・訂正・削除について</h2>
+                <div class="section-content">
+                    <p>
+                        ユーザーは、当社が保有するご自身の個人情報について、以下の権利を有します。
+                    </p>
+                    <ul>
+                        <li>個人情報の開示請求</li>
+                        <li>個人情報の訂正・追加・削除請求</li>
+                        <li>個人情報の利用停止・消去請求</li>
+                        <li>アカウント削除による全データの削除</li>
+                    </ul>
+                    <p>
+                        これらのご請求については、本人確認を行った上で、法令の定めに従い、遅滞なく対応いたします。
+                        ご請求は下記お問い合わせ先までご連絡ください。
+                    </p>
+                </div>
+            </div>
+
+            <!-- データの保存期間 -->
+            <div class="section">
+                <h2 class="section-title">データの保存期間</h2>
+                <div class="section-content">
+                    <ul>
+                        <li>アカウント情報：サービス利用期間中</li>
+                        <li>学習データ・統計分析履歴：サービス利用期間中</li>
+                        <li>ログデータ：収集から6ヶ月間</li>
+                        <li>削除されたデータ：30日後に完全削除</li>
+                    </ul>
+                    <p>
+                        アカウント削除後は、法令で保存が義務付けられているものを除き、
+                        速やかに個人情報を削除いたします。
+                    </p>
+                </div>
+            </div>
+
+            <!-- プライバシーポリシーの変更 -->
+            <div class="section">
+                <h2 class="section-title">プライバシーポリシーの変更</h2>
+                <div class="section-content">
+                    <p>
+                        当社は、法令の変更や事業内容の変更等に伴い、本プライバシーポリシーを変更することがあります。
+                        重要な変更については、サービス内での通知やメール等により事前にお知らせいたします。
+                    </p>
+                    <p>
+                        変更後のプライバシーポリシーは、本ページに掲載した時点で効力を生じるものとします。
+                    </p>
+                </div>
+            </div>
+
+            <!-- お問い合わせ -->
+            <div class="section">
+                <h2 class="section-title">お問い合わせ</h2>
+                <div class="section-content">
+                    <p>
+                        本プライバシーポリシーに関するお問い合わせは、以下までご連絡ください。
+                    </p>
+                    <p>
+                        <strong>【事業者名】</strong><br>
+                        <strong>【サポートメールアドレスを記載】</strong><br>
+                        営業時間：平日10:00-18:00（土日祝日除く）
+                    </p>
+                </div>
+            </div>
+
+            <a href="./service_landing_page本番.html" class="back-button">
+                ← サービス紹介ページに戻る
+            </a>
+        </div>
+    </div>
+</body>
+</html>

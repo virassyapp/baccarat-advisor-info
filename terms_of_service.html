@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>利用規約 | バカラパターン統計学習システム</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1f36 0%, #2d3748 100%);
+            color: white;
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 107, 107, 0.15) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .title {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4, #45b7d1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #cbd5e0;
+            font-weight: 500;
+        }
+
+        .content-card {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ff6b6b);
+            background-size: 300% 100%;
+            animation: borderFlow 3s ease-in-out infinite;
+        }
+
+        @keyframes borderFlow {
+            0%, 100% { background-position: 0% 0%; }
+            50% { background-position: 200% 0%; }
+        }
+
+        .section {
+            margin-bottom: 35px;
+        }
+
+        .section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #4facfe;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-content {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-content p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        .section-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-content ul {
+            padding-left: 20px;
+            margin: 15px 0;
+        }
+
+        .section-content li {
+            margin-bottom: 8px;
+            color: #cbd5e0;
+        }
+
+        .highlight {
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        .warning {
+            color: #fbbf24;
+            font-weight: 600;
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(107, 114, 128, 0.3);
+            margin-top: 30px;
+        }
+
+        .back-button:hover {
+            background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(107, 114, 128, 0.4);
+            text-decoration: none;
+            color: white;
+        }
+
+        .important-notice {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.15) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .important-notice h3 {
+            color: #34d399;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .important-notice p {
+            margin-bottom: 10px;
+            line-height: 1.8;
+        }
+
+        .important-notice strong {
+            color: #10b981;
+        }
+
+        .warning-notice {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(217, 119, 6, 0.1) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .warning-notice h3 {
+            color: #fbbf24;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .date-notice {
+            text-align: right;
+            color: #9ca3af;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+
+            .content-card {
+                padding: 25px;
+            }
+
+            .title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">利用規約</h1>
+            <p class="subtitle">バカラパターン統計学習システム</p>
+            <div class="date-notice">最終更新日：2025年【日付を記載】</div>
+        </div>
+
+        <div class="content-card">
+            <!-- サービスの性質について -->
+            <div class="important-notice">
+                <h3>サービスの性質について</h3>
+                <p>
+                    <strong>本サービスは統計学習・教育目的のシミュレーションツールです。</strong>
+                    実際の賭博行為や金銭の授受は一切行いません。バカラゲームのパターン分析手法を学習するための教材として提供しております。
+                </p>
+            </div>
+
+            <!-- 第1条 総則 -->
+            <div class="section">
+                <h2 class="section-title">第1条（総則）</h2>
+                <div class="section-content">
+                    <p>
+                        本利用規約（以下「本規約」）は、【事業者名】（以下「当社」）が提供する
+                        「バカラパターン統計学習システム」（以下「本サービス」）の利用条件を定めるものです。
+                    </p>
+                    <p>
+                        本サービスをご利用いただくすべてのユーザー（以下「利用者」）は、
+                        本規約に同意したものとみなします。
+                    </p>
+                </div>
+            </div>
+
+            <!-- 第2条 サービス内容 -->
+            <div class="section">
+                <h2 class="section-title">第2条（サービス内容）</h2>
+                <div class="section-content">
+                    <p><strong class="highlight">本サービスは以下の内容を提供します：</strong></p>
+                    <ul>
+                        <li>バカラゲームの統計パターン分析機能</li>
+                        <li>確率論・リスク管理理論の学習システム</li>
+                        <li>データ可視化・グラフ表示機能</li>
+                        <li>多言語対応（6か国語）</li>
+                        <li>学習進捗の保存・管理機能</li>
+                        <li>統計計算練習機能</li>
+                    </ul>
+                    <p class="warning">
+                        <strong>重要：本サービスは純粋に教育・学習目的であり、
+                        実際の賭博サイトではありません。金銭の授受は一切行いません。</strong>
+                    </p>
+                </div>
+            </div>
+
+            <!-- 第3条 利用資格 -->
+            <div class="section">
+                <h2 class="section-title">第3条（利用資格）</h2>
+                <div class="section-content">
+                    <p>本サービスは以下の条件を満たす方にご利用いただけます：</p>
+                    <ul>
+                        <li>18歳以上である方</li>
+                        <li>本規約および関連法令を遵守できる方</li>
+                        <li>統計学・確率論の学習を目的とする方</li>
+                        <li>有効なGoogleアカウントをお持ちの方</li>
+                        <li>有効なクレジットカードをお持ちの方（決済のため）</li>
+                    </ul>
+                    <p>
+                        未成年の方は保護者の同意を得た上でご利用ください。
+                        虚偽の情報で登録された場合、利用を停止することがあります。
+                    </p>
+                </div>
+            </div>
+
+            <!-- 第4条 アカウント登録・管理 -->
+            <div class="section">
+                <h2 class="section-title">第4条（アカウント登録・管理）</h2>
+                <div class="section-content">
+                    <p><strong class="highlight">1. アカウント作成</strong></p>
+                    <p>
+                        本サービスの利用には、Googleアカウントによるログインが必要です。
+                        登録時には正確な情報を提供してください。
+                    </p>
+                    
+                    <p><strong class="highlight">2. アカウント管理責任</strong></p>
+                    <ul>
+                        <li>アカウントの管理は利用者の責任において行ってください</li>
+                        <li>第三者による不正利用を防止してください</li>
+                        <li>アカウント情報の変更は速やかに行ってください</li>
+                        <li>退会時はアカウント削除手続きを行ってください</li>
+                    </ul>
+
+                    <p><strong class="highlight">3. 禁止事項</strong></p>
+                    <ul>
+                        <li>複数アカウントの作成・運用</li>
+                        <li>他人のアカウントの使用</li>
+                        <li>虚偽情報での登録</li>
+                        <li>アカウントの譲渡・売買</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 第5条 料金・決済 -->
+            <div class="section">
+                <h2 class="section-title">第5条（料金・決済）</h2>
+                <div class="section-content">
+                    <p><strong class="highlight">1. 料金体系</strong></p>
+                    <p>
+                        本サービスは月額制のサブスクリプションサービスです。<br>
+                        料金：【料金を記載】円（税込）/月
+                    </p>
+
+                    <p><strong class="highlight">2. 決済方法</strong></p>
+                    <ul>
+                        <li>クレジットカード決済（Stripe経由）</li>
+                        <li>初回登録時に即時決済</li>
+                        <li>以降毎月自動更新・決済</li>
+                    </ul>
+
+                    <p><strong class="highlight">3. 料金の変更</strong></p>
+                    <p>
+                        当社は、サービス内容の変更や経済情勢等を考慮し、料金を変更する場合があります。
+                        料金変更時は、事前に利用者に通知いたします。
+                    </p>
+                </div>
+            </div>
+
+            <!-- 第6条 サービス利用上の注意 -->
+            <div class="section">
+                <h2 class="section-title">第6条（サービス利用上の注意）</h2>
+                <div class="section-content">
+                    <p><strong class="highlight">1. 教育目的での利用</strong></p>
+                    <p>
+                        本サービスは統計学・確率論の学習を目的としたものです。
+                        実際のギャンブルへの参加を推奨するものではありません。
+                    </p>
+
+                    <p><strong class="highlight">2. 利用環境</strong></p>
+                    <ul>
+                        <li>インターネット接続環境が必要です</li>
+                        <li>推奨ブラウザ：Chrome、Safari、Firefox、Edge 最新版</li>
+                        <li>JavaScript有効環境での利用</li>
+                    </ul>
+
+                    <p><strong class="highlight">3. データの取り扱い</strong></p>
+                    <ul>
+                        <li>学習データは当社サーバーに保存されます</li>
+                        <li>アカウント削除時にデータは削除されます</li>
+                        <li>バックアップ等、データ管理は利用者責任</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 第7条 禁止行為 -->
+            <div class="section">
+                <h2 class="section-title">第7条（禁止行為）</h2>
+                <div class="section-content">
+                    <p>利用者は、本サービスの利用にあたり、以下の行為を行ってはなりません：</p>
+                    <ul>
+                        <li>法令に違反する行為</li>
+                        <li>本サービスの運営を妨害する行為</li>
+                        <li>他の利用者に迷惑をかける行為</li>
+                        <li>虚偽の情報を登録・送信する行為</li>
+                        <li>不正アクセスやシステムへの攻撃行為</li>
+                        <li>本サービスの複製、改変、リバースエンジニアリング</li>
+                        <li>営利目的での二次利用</li>
+                        <li>知的財産権を侵害する行為</li>
+                        <li>実際のギャンブル行為への勧誘・助長</li>
+                        <li>その他、当社が不適切と判断する行為</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 第8条 サービスの変更・停止 -->
+            <div class="section">
+                <h2 class="section-title">第8条（サービスの変更・停止）</h2>
+                <div class="section-content">
+                    <p><strong class="highlight">1. サービスの変更</strong></p>
+                    <p>
+                        当社は、本サービスの内容を予告なく変更することがあります。
+                        重要な変更については、事前に利用者に通知いたします。
+                    </p>
+
+                    <p><strong class="highlight">2. サービスの停止</strong></p>
+                    <p>当社は、以下の場合にサービスを停止することがあります：</p>
+                    <ul>
+                        <li>システムメンテナンスのため</li>
+                        <li>天災等の不可抗力のため</li>
+                        <li>技術的な問題が発生した場合</li>
+                        <li>その他、運営上必要と判断した場合</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 第9条 利用停止・解約 -->
+            <div class="section">
+                <h2 class="section-title">第9条（利用停止・解約）</h2>
+                <div class="section-content">
+                    <p><strong class="highlight">1. 利用者による解約</strong></p>
+                    <ul>
+                        <li>いつでもサブスクリプションの解約が可能です</li>
+                        <li>解約後は次回請求日以降、プレミアム機能が利用できません</li>
+                        <li>解約手続きは利用者自身で行ってください</li>
+                    </ul>
+
+                    <p><strong class="highlight">2. 当社による利用停止</strong></p>
+                    <p>以下の場合、当社は利用者のアカウントを停止することがあります：</p>
+                    <ul>
+                        <li>本規約に違反した場合</li>
+                        <li>料金の支払いが確認できない場合</li>
+                        <li>長期間利用がない場合</li>
+                        <li>その他、当社が不適切と判断した場合</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 第10条 知的財産権 -->
+            <div class="section">
+                <h2 class="section-title">第10条（知的財産権）</h2>
+                <div class="section-content">
+                    <p>
+                        本サービスに関する知的財産権（著作権、商標権、特許権等）は、
+                        当社または正当な権利者に帰属します。
+                    </p>
+                    <p>
+                        利用者は、本サービスの利用により得られる情報を、
+                        個人の学習目的の範囲を超えて利用することはできません。
+                    </p>
+                </div>
+            </div>
+
+            <!-- 第11条 免責事項 -->
+            <div class="section">
+                <h2 class="section-title">第11条（免責事項）</h2>
+                <div class="section-content">
+                    <p><strong class="highlight">1. サービスの品質について</strong></p>
+                    <p>
+                        当社は本サービスの正確性、完全性、有用性について保証いたしません。
+                        教育目的のシミュレーションであることをご理解ください。
+                    </p>
+
+                    <p><strong class="highlight">2. 損害に関する免責</strong></p>
+                    <p>
+                        本サービスの利用により生じた損害について、当社は責任を負いません。
+                        ただし、当社の故意または重大な過失による場合は除きます。
+                    </p>
+
+                    <p><strong class="highlight">3. 第三者サービスについて</strong></p>
+                    <p>
+                        本サービスが連携する第三者サービス（Google、Stripe等）については、
+                        それぞれの利用規約が適用されます。
+                    </p>
+                </div>
+            </div>
+
+            <!-- 第12条 個人情報の取り扱い -->
+            <div class="section">
+                <h2 class="section-title">第12条（個人情報の取り扱い）</h2>
+                <div class="section-content">
+                    <p>
+                        当社は、利用者の個人情報を適切に管理し、
+                        プライバシーポリシーに従って取り扱います。
+                    </p>
+                    <p>
+                        個人情報の詳細な取り扱いについては、
+                        別途定めるプライバシーポリシーをご確認ください。
+                    </p>
+                </div>
+            </div>
+
+            <!-- 第13条 規約の変更 -->
+            <div class="section">
+                <h2 class="section-title">第13条（規約の変更）</h2>
+                <div class="section-content">
+                    <p>
+                        当社は、必要に応じて本規約を変更することがあります。
+                        重要な変更については、事前に利用者に通知いたします。
+                    </p>
+                    <p>
+                        変更後の規約は、本ページに掲載した時点で効力を生じるものとします。
+                        継続してサービスをご利用いただく場合、変更後の規約に同意したものとみなします。
+                    </p>
+                </div>
+            </div>
+
+            <!-- 第14条 準拠法・管轄裁判所 -->
+            <div class="section">
+                <h2 class="section-title">第14条（準拠法・管轄裁判所）</h2>
+                <div class="section-content">
+                    <p>
+                        本規約は日本法に準拠して解釈されるものとします。
+                    </p>
+                    <p>
+                        本サービスに関して紛争が生じた場合は、
+                        当社所在地を管轄する裁判所を専属的合意管轄とします。
+                    </p>
+                </div>
+            </div>
+
+            <!-- 重要な注意事項 -->
+            <div class="warning-notice">
+                <h3>ギャンブル依存症予防に関する重要なお知らせ</h3>
+                <p>
+                    <strong>本サービスは教育目的のシミュレーションツールです。</strong>
+                    実際のギャンブルへの参加を推奨するものではありません。
+                </p>
+                <p>
+                    ギャンブル依存症は深刻な問題です。もしギャンブルに関する問題を感じられた場合は、
+                    以下の相談窓口をご利用ください：
+                </p>
+                <ul>
+                    <li>ギャンブル等依存症でお困りの皆様へ（厚生労働省）</li>
+                    <li>精神保健福祉センター</li>
+                    <li>各都道府県の相談窓口</li>
+                </ul>
+            </div>
+
+            <!-- お問い合わせ -->
+            <div class="section">
+                <h2 class="section-title">お問い合わせ</h2>
+                <div class="section-content">
+                    <p>
+                        本規約に関するお問い合わせは、以下までご連絡ください。
+                    </p>
+                    <p>
+                        <strong>【事業者名】</strong><br>
+                        <strong>【サポートメールアドレスを記載】</strong><br>
+                        営業時間：平日10:00-18:00（土日祝日除く）
+                    </p>
+                </div>
+            </div>
+
+            <a href="./service_landing_page本番.html" class="back-button">
+                ← サービス紹介ページに戻る
+            </a>
+        </div>
+    </div>
+</body>
+</html>

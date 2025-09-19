@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">バカラパターン統計学習システム - 統計分析・確率論を学ぶ教育ツール</title>
+    <meta name="description" id="page-description" content="バカラゲームを題材にした統計学・確率論の学習システム。パターン分析、リスク管理理論を実践的に学習できる教育ツールです。">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1f36 0%, #2d3748 100%);
+            color: white;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 107, 107, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(78, 205, 196, 0.1) 0%, transparent 50%);
+            z-index: -1;
+            animation: backgroundFlow 20s ease-in-out infinite;
+        }
+
+        @keyframes backgroundFlow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Language Switcher */
+        .language-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 12px;
+        }
+
+        .language-select {
+            background: transparent;
+            color: white;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .language-select:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .language-select:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.5);
+        }
+
+        .language-select option {
+            background: #1f2937;
+            color: white;
+        }
+
+        /* Header */
+        .header {
+            padding: 60px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: 48px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+            animation: titleGlow 4s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3)); }
+            50% { filter: drop-shadow(0 0 30px rgba(78, 205, 196, 0.5)); }
+        }
+
+        .hero-subtitle {
+            font-size: 24px;
+            color: #cbd5e0;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .hero-description {
+            font-size: 18px;
+            color: #9ca3af;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            line-height: 1.8;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .btn {
+            padding: 16px 32px;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(16, 185, 129, 0.6);
+        }
+
+        .btn-secondary {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(15px);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 0, 0, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Educational Notice */
+        .educational-banner {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.15) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 60px 0;
+            text-align: center;
+            backdrop-filter: blur(15px);
+        }
+
+        .educational-banner h2 {
+            color: #34d399;
+            margin-bottom: 15px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .educational-banner p {
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 18px;
+            color: #9ca3af;
+            margin-bottom: 60px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .feature-card {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ff6b6b);
+            background-size: 300% 100%;
+            animation: borderFlow 3s ease-in-out infinite;
+        }
+
+        @keyframes borderFlow {
+            0%, 100% { background-position: 0% 0%; }
+            50% { background-position: 200% 0%; }
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .feature-title {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #e2e8f0;
+            font-weight: 700;
+        }
+
+        .feature-description {
+            color: #cbd5e0;
+            line-height: 1.6;
+        }
+
+        /* How it Works */
+        .how-it-works {
+            padding: 80px 0;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .step-card {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 800;
+            margin: 0 auto 20px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .step-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #e2e8f0;
+            font-weight: 600;
+        }
+
+        .step-description {
+            color: #9ca3af;
+            line-height: 1.6;
+        }
+
+        /* Pricing */
+        .pricing-section {
+            padding: 80px 0;
+        }
+
+        .pricing-card {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 400px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #10b981, #34d399, #6ee7b7, #34d399, #10b981);
+            background-size: 300% 100%;
+            animation: borderFlow 3s ease-in-out infinite;
+        }
+
+        .price-tag {
+            font-size: 48px;
+            font-weight: 800;
+            color: #10b981;
+            margin-bottom: 10px;
+        }
+
+        .price-period {
+            color: #9ca3af;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .price-features {
+            list-style: none;
+            margin-bottom: 40px;
+        }
+
+        .price-features li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e0;
+        }
+
+        .price-features li:last-child {
+            border-bottom: none;
+        }
+
+        .price-features li::before {
+            content: '✓';
+            color: #10b981;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 60px 0;
+            background: rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: #4facfe;
+            text-decoration: underline;
+        }
+
+        .footer-text {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        /* Screenshots */
+        .screenshots-section {
+            padding: 80px 0;
+        }
+
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .screenshot-card {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .screenshot-placeholder {
+            background: linear-gradient(135deg, #374151, #4b5563);
+            height: 200px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .language-switcher {
+                top: 10px;
+                right: 10px;
+            }
+
+            .hero-title {
+                font-size: 36px;
+            }
+
+            .hero-subtitle {
+                font-size: 20px;
+            }
+
+            .hero-description {
+                font-size: 16px;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Language Switcher -->
+    <div class="language-switcher">
+        <select id="languageSelect" class="language-select">
+            <option value="ja">🇯🇵 日本語</option>
+            <option value="en">🇺🇸 English</option>
+            <option value="zh">🇨🇳 中文</option>
+            <option value="ko">🇰🇷 한국어</option>
+            <option value="es">🇪🇸 Español</option>
+            <option value="fr">🇫🇷 Français</option>
+        </select>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="hero-title" id="heroTitle">バカラパターン統計学習システム</h1>
+            <p class="hero-subtitle" id="heroSubtitle">統計学・確率論を実践的に学ぶ教育ツール</p>
+            <p class="hero-description" id="heroDescription">
+                バカラゲームのパターンを題材に、統計分析・確率論・リスク管理理論を学習できる教育システムです。
+                実際の賭博は行わず、純粋に学術的な統計学習を目的としています。
+            </p>
+            <div class="cta-buttons">
+                <a href="/app" class="btn btn-primary" id="startLearningBtn">
+                    <span>🎓</span>
+                    <span id="startLearningText">学習を開始する</span>
+                </a>
+                <a href="#features" class="btn btn-secondary" id="learnMoreBtn">
+                    <span>📖</span>
+                    <span id="learnMoreText">機能を詳しく見る</span>
+                </a>
+            </div>
+        </header>
+
+        <!-- Educational Notice -->
+        <section class="educational-banner">
+            <h2 id="educationalTitle">🎓 教育目的・非賭博サービス</h2>
+            <p id="educationalDescription1">
+                <strong>本サービスは統計学習・教育目的のシミュレーションツールです。</strong>
+                実際の賭博行為や金銭の授受は一切行いません。
+            </p>
+            <p id="educationalDescription2">
+                バカラゲームのパターン分析手法を通じて、統計学、確率論、データ分析の理論を実践的に学習することができます。
+                純粋な学術目的のツールであり、オンラインカジノや賭博サイトではありません。
+            </p>
+        </section>
+
+        <!-- Features -->
+        <section id="features" class="features-section">
+            <h2 class="section-title" id="featuresTitle">学習機能</h2>
+            <p class="section-subtitle" id="featuresSubtitle">統計学・確率論を実践的に学べる豊富な機能</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title" id="feature1Title">パターン統計分析</h3>
+                    <p class="feature-description" id="feature1Description">
+                        バカラゲームの結果パターンを統計的に分析し、確率論の基礎を学習できます。
+                        データの可視化と傾向分析の手法を実践的に習得。
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3 class="feature-title" id="feature2Title">リスク管理理論</h3>
+                    <p class="feature-description" id="feature2Description">
+                        資金管理とリスク評価の理論を学習。損失限度の設定や確率に基づいた
+                        意思決定プロセスを体験できます。
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3 class="feature-title" id="feature3Title">データ可視化</h3>
+                    <p class="feature-description" id="feature3Description">
+                        リアルタイムでのデータ可視化機能により、統計的変化を視覚的に理解。
+                        グラフ読解とトレンド分析のスキルを向上させます。
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🧮</div>
+                    <h3 class="feature-title" id="feature4Title">確率計算実習</h3>
+                    <p class="feature-description" id="feature4Description">
+                        ベイズ統計やマーチンゲール理論など、高度な確率論を実際の
+                        シミュレーションを通じて学習できます。
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌍</div>
+                    <h3 class="feature-title" id="feature5Title">多言語対応</h3>
+                    <p class="feature-description" id="feature5Description">
+                        日本語、英語、中国語など6か国語に対応。グローバルな統計学習
+                        環境を提供し、国際的な学習コミュニティを支援。
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💱</div>
+                    <h3 class="feature-title" id="feature6Title">多通貨シミュレーション</h3>
+                    <p class="feature-description" id="feature6Description">
+                        JPY、USD、EURなど複数通貨でのシミュレーションが可能。
+                        国際金融と統計分析の関係を学習できます。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- How it Works -->
+        <section class="how-it-works">
+            <div class="container">
+                <h2 class="section-title" id="howItWorksTitle">学習の流れ</h2>
+                <p class="section-subtitle" id="howItWorksSubtitle">3つのステップで統計学習を開始</p>
+                
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h3 class="step-title" id="step1Title">アカウント作成</h3>
+                        <p class="step-description" id="step1Description">
+                            Googleアカウントで簡単にログイン。すぐに学習環境にアクセスできます。
+                        </p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h3 class="step-title" id="step2Title">学習設定</h3>
+                        <p class="step-description" id="step2Description">
+                            言語、通貨、統計分析の設定をカスタマイズ。自分のペースで学習を開始。
+                        </p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h3 class="step-title" id="step3Title">実践学習</h3>
+                        <p class="step-description" id="step3Description">
+                            シミュレーションを通じて統計理論を実践。リアルタイムでスキルを向上させます。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Screenshots -->
+        <section class="screenshots-section">
+            <h2 class="section-title" id="screenshotsTitle">システム画面</h2>
+            <p class="section-subtitle" id="screenshotsSubtitle">直感的で使いやすいインターフェース</p>
+            
+            <div class="screenshots-grid">
+                <div class="screenshot-card">
+                    <div class="screenshot-placeholder" id="screenshot1Placeholder">
+                        統計分析ダッシュボード
+                    </div>
+                    <h3 class="feature-title" id="screenshot1Title">メイン分析画面</h3>
+                    <p class="feature-description" id="screenshot1Description">
+                        リアルタイムでの統計分析と可視化機能
+                    </p>
+                </div>
+                <div class="screenshot-card">
+                    <div class="screenshot-placeholder" id="screenshot2Placeholder">
+                        リスク管理パネル
+                    </div>
+                    <h3 class="feature-title" id="screenshot2Title">リスク管理機能</h3>
+                    <p class="feature-description" id="screenshot2Description">
+                        資金管理とリスク評価の実習環境
+                    </p>
+                </div>
+                <div class="screenshot-card">
+                    <div class="screenshot-placeholder" id="screenshot3Placeholder">
+                        データ履歴グラフ
+                    </div>
+                    <h3 class="feature-title" id="screenshot3Title">データ履歴表示</h3>
+                    <p class="feature-description" id="screenshot3Description">
+                        学習進捗と統計データの履歴管理
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing -->
+        <section class="pricing-section">
+            <h2 class="section-title" id="pricingTitle">料金プラン</h2>
+            <p class="section-subtitle" id="pricingSubtitle">統計学習システム利用料金</p>
+            
+            <div class="pricing-card">
+                <div class="price-tag" id="priceAmount">【料金】円</div>
+                <div class="price-period" id="pricePeriod">月額（税込）</div>
+                
+                <ul class="price-features">
+                    <li id="feature1">全統計分析機能の利用</li>
+                    <li id="feature2">リアルタイムデータ可視化</li>
+                    <li id="feature3">6か国語対応</li>
+                    <li id="feature4">複数通貨シミュレーション</li>
+                    <li id="feature5">学習進捗の保存・履歴管理</li>
+                    <li id="feature6">24時間365日アクセス</li>
+                    <li id="feature7">モバイル・タブレット対応</li>
+                    <li id="feature8">いつでも解約可能</li>
+                </ul>
+                
+                <a href="/app" class="btn btn-primary">
+                    <span>🎓</span>
+                    <span id="startLearningText2">学習を開始する</span>
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="tokushoho.html" class="footer-link" id="footerLink1">特定商取引法に基づく表示</a>
+                <a href="privacy_policy.html" class="footer-link" id="footerLink2">プライバシーポリシー</a>
+                <a href="terms_of_service.html" class="footer-link" id="footerLink3">利用規約</a>
+                <a href="contact.html" class="footer-link" id="footerLink4">お問い合わせ</a>
+            </div>
+            <p class="footer-text" id="footerText">
+                © 2025 【事業者名】 All rights reserved. | 統計学習・教育目的のシミュレーションツール
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // 翻訳データ
+        const translations = {
+            ja: {
+                pageTitle: "バカラパターン統計学習システム - 統計分析・確率論を学ぶ教育ツール",
+                pageDescription: "バカラゲームを題材にした統計学・確率論の学習システム。パターン分析、リスク管理理論を実践的に学習できる教育ツールです。",
+                heroTitle: "バカラパターン統計学習システム",
+                heroSubtitle: "統計学・確率論を実践的に学ぶ教育ツール",
+                heroDescription: "バカラゲームのパターンを題材に、統計分析・確率論・リスク管理理論を学習できる教育システムです。実際の賭博は行わず、純粋に学術的な統計学習を目的としています。",
+                startLearningText: "学習を開始する",
+                learnMoreText: "機能を詳しく見る",
+                educationalTitle: "🎓 教育目的・非賭博サービス",
+                educationalDescription1: "本サービスは統計学習・教育目的のシミュレーションツールです。実際の賭博行為や金銭の授受は一切行いません。",
+                educationalDescription2: "バカラゲームのパターン分析手法を通じて、統計学、確率論、データ分析の理論を実践的に学習することができます。純粋な学術目的のツールであり、オンラインカジノや賭博サイトではありません。",
+                featuresTitle: "学習機能",
+                featuresSubtitle: "統計学・確率論を実践的に学べる豊富な機能",
+                feature1Title: "パターン統計分析",
+                feature1Description: "バカラゲームの結果パターンを統計的に分析し、確率論の基礎を学習できます。データの可視化と傾向分析の手法を実践的に習得。",
+                feature2Title: "リスク管理理論",
+                feature2Description: "資金管理とリスク評価の理論を学習。損失限度の設定や確率に基づいた意思決定プロセスを体験できます。",
+                feature3Title: "データ可視化",
+                feature3Description: "リアルタイムでのデータ可視化機能により、統計的変化を視覚的に理解。グラフ読解とトレンド分析のスキルを向上させます。",
+                feature4Title: "確率計算実習",
+                feature4Description: "ベイズ統計やマーチンゲール理論など、高度な確率論を実際のシミュレーションを通じて学習できます。",
+                feature5Title: "多言語対応",
+                feature5Description: "日本語、英語、中国語など6か国語に対応。グローバルな統計学習環境を提供し、国際的な学習コミュニティを支援。",
+                feature6Title: "多通貨シミュレーション",
+                feature6Description: "JPY、USD、EURなど複数通貨でのシミュレーションが可能。国際金融と統計分析の関係を学習できます。",
+                howItWorksTitle: "学習の流れ",
+                howItWorksSubtitle: "3つのステップで統計学習を開始",
+                step1Title: "アカウント作成",
+                step1Description: "Googleアカウントで簡単にログイン。すぐに学習環境にアクセスできます。",
+                step2Title: "学習設定",
+                step2Description: "言語、通貨、統計分析の設定をカスタマイズ。自分のペースで学習を開始。",
+                step3Title: "実践学習",
+                step3Description: "シミュレーションを通じて統計理論を実践。リアルタイムでスキルを向上させます。",
+                screenshotsTitle: "システム画面",
+                screenshotsSubtitle: "直感的で使いやすいインターフェース",
+                screenshot1Placeholder: "統計分析ダッシュボード",
+                screenshot1Title: "メイン分析画面",
+                screenshot1Description: "リアルタイムでの統計分析と可視化機能",
+                screenshot2Placeholder: "リスク管理パネル",
+                screenshot2Title: "リスク管理機能",
+                screenshot2Description: "資金管理とリスク評価の実習環境",
+                screenshot3Placeholder: "データ履歴グラフ",
+                screenshot3Title: "データ履歴表示",
+                screenshot3Description: "学習進捗と統計データの履歴管理",
+                pricingTitle: "料金プラン",
+                pricingSubtitle: "統計学習システム利用料金",
+                priceAmount: "【料金】円",
+                pricePeriod: "月額（税込）",
+                feature1: "全統計分析機能の利用",
+                feature2: "リアルタイムデータ可視化",
+                feature3: "6か国語対応",
+                feature4: "複数通貨シミュレーション",
+                feature5: "学習進捗の保存・履歴管理",
+                feature6: "24時間365日アクセス",
+                feature7: "モバイル・タブレット対応",
+                feature8: "いつでも解約可能",
+                footerLink1: "特定商取引法に基づく表示",
+                footerLink2: "プライバシーポリシー",
+                footerLink3: "利用規約",
+                footerLink4: "お問い合わせ",
+                footerText: "© 2025 【事業者名】 All rights reserved. | 統計学習・教育目的のシミュレーションツール"
+            },
+            en: {
+                pageTitle: "Baccarat Pattern Statistical Learning System - Educational Tool for Statistics & Probability",
+                pageDescription: "A statistical learning system using baccarat game patterns. Practical learning tool for pattern analysis and risk management theory.",
+                heroTitle: "Baccarat Pattern Statistical Learning System",
+                heroSubtitle: "Educational Tool for Practical Statistics & Probability Learning",
+                heroDescription: "An educational system for learning statistical analysis, probability theory, and risk management using baccarat game patterns. No actual gambling involved - purely academic statistical learning purposes.",
+                startLearningText: "Start Learning",
+                learnMoreText: "Learn More About Features",
+                educationalTitle: "🎓 Educational Purpose - Non-Gambling Service",
+                educationalDescription1: "This service is a simulation tool for statistical learning and educational purposes. No actual gambling or monetary transactions are involved.",
+                educationalDescription2: "Through baccarat game pattern analysis methods, you can practically learn statistics, probability theory, and data analysis theory. This is a purely academic tool and not an online casino or gambling site.",
+                featuresTitle: "Learning Features",
+                featuresSubtitle: "Rich features for practical statistics and probability learning",
+                feature1Title: "Pattern Statistical Analysis",
+                feature1Description: "Statistically analyze baccarat game result patterns and learn the basics of probability theory. Practical acquisition of data visualization and trend analysis methods.",
+                feature2Title: "Risk Management Theory",
+                feature2Description: "Learn fund management and risk evaluation theory. Experience loss limit setting and probability-based decision-making processes.",
+                feature3Title: "Data Visualization",
+                feature3Description: "Visually understand statistical changes through real-time data visualization. Improve graph interpretation and trend analysis skills.",
+                feature4Title: "Probability Calculation Practice",
+                feature4Description: "Learn advanced probability theory such as Bayesian statistics and martingale theory through actual simulations.",
+                feature5Title: "Multi-Language Support",
+                feature5Description: "Supports 6 languages including Japanese, English, and Chinese. Provides a global statistical learning environment supporting international learning communities.",
+                feature6Title: "Multi-Currency Simulation",
+                feature6Description: "Simulation possible with multiple currencies such as JPY, USD, EUR. Learn the relationship between international finance and statistical analysis.",
+                howItWorksTitle: "Learning Process",
+                howItWorksSubtitle: "Start statistical learning in 3 steps",
+                step1Title: "Account Creation",
+                step1Description: "Easy login with Google account. Immediate access to the learning environment.",
+                step2Title: "Learning Setup",
+                step2Description: "Customize language, currency, and statistical analysis settings. Start learning at your own pace.",
+                step3Title: "Practical Learning",
+                step3Description: "Practice statistical theory through simulation. Improve skills in real-time.",
+                screenshotsTitle: "System Interface",
+                screenshotsSubtitle: "Intuitive and user-friendly interface",
+                screenshot1Placeholder: "Statistical Analysis Dashboard",
+                screenshot1Title: "Main Analysis Screen",
+                screenshot1Description: "Real-time statistical analysis and visualization features",
+                screenshot2Placeholder: "Risk Management Panel",
+                screenshot2Title: "Risk Management Features",
+                screenshot2Description: "Fund management and risk evaluation practice environment",
+                screenshot3Placeholder: "Data History Graph",
+                screenshot3Title: "Data History Display",
+                screenshot3Description: "Learning progress and statistical data history management",
+                pricingTitle: "Pricing Plan",
+                pricingSubtitle: "Statistical Learning System Usage Fee",
+                priceAmount: "$【Price】",
+                pricePeriod: "Monthly (Tax Included)",
+                feature1: "Full statistical analysis features",
+                feature2: "Real-time data visualization",
+                feature3: "6-language support",
+                feature4: "Multi-currency simulation",
+                feature5: "Learning progress saving & history",
+                feature6: "24/7 access",
+                feature7: "Mobile & tablet support",
+                feature8: "Cancel anytime",
+                footerLink1: "Commercial Transaction Act",
+                footerLink2: "Privacy Policy",
+                footerLink3: "Terms of Service",
+                footerLink4: "Contact",
+                footerText: "© 2025 【Company Name】 All rights reserved. | Statistical Learning & Educational Simulation Tool"
+            },
+            zh: {
+                pageTitle: "百家乐模式统计学习系统 - 统计分析与概率论教育工具",
+                pageDescription: "以百家乐游戏为主题的统计学与概率论学习系统。模式分析与风险管理理论的实用学习工具。",
+                heroTitle: "百家乐模式统计学习系统",
+                heroSubtitle: "实用统计学与概率论教育工具",
+                heroDescription: "以百家乐游戏模式为主题，可以学习统计分析、概率论、风险管理理论的教育系统。不涉及实际赌博，纯粹以学术统计学习为目的。",
+                startLearningText: "开始学习",
+                learnMoreText: "了解更多功能",
+                educationalTitle: "🎓 教育目的・非赌博服务",
+                educationalDescription1: "本服务是统计学习・教育目的的模拟工具。不涉及实际赌博行为或金钱交易。",
+                educationalDescription2: "通过百家乐游戏模式分析方法，可以实践性地学习统计学、概率论、数据分析理论。这是纯粹学术目的的工具，不是在线赌场或赌博网站。",
+                featuresTitle: "学习功能",
+                featuresSubtitle: "丰富的统计学・概率论实践学习功能",
+                feature1Title: "模式统计分析",
+                feature1Description: "统计分析百家乐游戏结果模式，学习概率论基础。实践掌握数据可视化和趋势分析方法。",
+                feature2Title: "风险管理理论",
+                feature2Description: "学习资金管理和风险评估理论。体验损失限度设定和基于概率的决策过程。",
+                feature3Title: "数据可视化",
+                feature3Description: "通过实时数据可视化功能，直观理解统计变化。提高图表解读和趋势分析技能。",
+                feature4Title: "概率计算实习",
+                feature4Description: "通过实际模拟学习贝叶斯统计和鞅理论等高级概率论。",
+                feature5Title: "多语言支持",
+                feature5Description: "支持日语、英语、中文等6种语言。提供全球统计学习环境，支持国际学习社区。",
+                feature6Title: "多货币模拟",
+                feature6Description: "可进行JPY、USD、EUR等多种货币的模拟。学习国际金融与统计分析的关系。",
+                howItWorksTitle: "学习流程",
+                howItWorksSubtitle: "3个步骤开始统计学习",
+                step1Title: "创建账户",
+                step1Description: "使用Google账户轻松登录。立即访问学习环境。",
+                step2Title: "学习设置",
+                step2Description: "自定义语言、货币、统计分析设置。按自己的节奏开始学习。",
+                step3Title: "实践学习",
+                step3Description: "通过模拟实践统计理论。实时提高技能。",
+                screenshotsTitle: "系统界面",
+                screenshotsSubtitle: "直观易用的界面",
+                screenshot1Placeholder: "统计分析仪表板",
+                screenshot1Title: "主分析界面",
+                screenshot1Description: "实时统计分析和可视化功能",
+                screenshot2Placeholder: "风险管理面板",
+                screenshot2Title: "风险管理功能",
+                screenshot2Description: "资金管理和风险评估实习环境",
+                screenshot3Placeholder: "数据历史图表",
+                screenshot3Title: "数据历史显示",
+                screenshot3Description: "学习进度和统计数据历史管理",
+                pricingTitle: "价格方案",
+                pricingSubtitle: "统计学习系统使用费",
+                priceAmount: "【价格】元",
+                pricePeriod: "月费（含税）",
+                feature1: "全统计分析功能使用",
+                feature2: "实时数据可视化",
+                feature3: "6种语言支持",
+                feature4: "多货币模拟",
+                feature5: "学习进度保存・历史管理",
+                feature6: "24小时365天访问",
+                feature7: "手机・平板支持",
+                feature8: "随时可取消",
+                footerLink1: "特定商业交易法表示",
+                footerLink2: "隐私政策",
+                footerLink3: "使用条款",
+                footerLink4: "联系我们",
+                footerText: "© 2025 【事业者名】 All rights reserved. | 统计学习・教育目的模拟工具"
+            },
+            ko: {
+                pageTitle: "바카라 패턴 통계학습 시스템 - 통계분석・확률론 교육도구",
+                pageDescription: "바카라 게임을 소재로 한 통계학・확률론 학습시스템. 패턴 분석, 위험관리 이론을 실용적으로 학습할 수 있는 교육도구입니다.",
+                heroTitle: "바카라 패턴 통계학습 시스템",
+                heroSubtitle: "통계학・확률론을 실용적으로 배우는 교육도구",
+                heroDescription: "바카라 게임의 패턴을 소재로, 통계분석・확률론・위험관리 이론을 학습할 수 있는 교육시스템입니다. 실제 도박은 하지 않으며, 순수하게 학술적인 통계학습을 목적으로 합니다.",
+                startLearningText: "학습 시작하기",
+                learnMoreText: "기능 자세히 보기",
+                educationalTitle: "🎓 교육목적・비도박 서비스",
+                educationalDescription1: "본 서비스는 통계학습・교육목적의 시뮬레이션 도구입니다. 실제 도박행위나 금전 거래는 일체 하지 않습니다.",
+                educationalDescription2: "바카라 게임의 패턴분석 기법을 통해, 통계학, 확률론, 데이터 분석 이론을 실용적으로 학습할 수 있습니다. 순수한 학술목적의 도구이며, 온라인 카지노나 도박사이트가 아닙니다.",
+                featuresTitle: "학습 기능",
+                featuresSubtitle: "통계학・확률론을 실용적으로 배울 수 있는 풍부한 기능",
+                feature1Title: "패턴 통계분석",
+                feature1Description: "바카라 게임의 결과 패턴을 통계적으로 분석하고, 확률론의 기초를 학습할 수 있습니다. 데이터의 시각화와 경향분석 기법을 실용적으로 습득.",
+                feature2Title: "위험관리 이론",
+                feature2Description: "자금관리와 위험평가 이론을 학습. 손실한도 설정이나 확률에 기반한 의사결정 과정을 체험할 수 있습니다.",
+                feature3Title: "데이터 시각화",
+                feature3Description: "실시간 데이터 시각화 기능으로, 통계적 변화를 시각적으로 이해. 그래프 해독과 트렌드 분석 스킬을 향상시킵니다.",
+                feature4Title: "확률계산 실습",
+                feature4Description: "베이즈 통계나 마틴게일 이론 등, 고도의 확률론을 실제 시뮬레이션을 통해 학습할 수 있습니다.",
+                feature5Title: "다국어 지원",
+                feature5Description: "일본어, 영어, 중국어 등 6개국어 지원. 글로벌한 통계학습 환경을 제공하고, 국제적인 학습 커뮤니티를 지원.",
+                feature6Title: "다통화 시뮬레이션",
+                feature6Description: "JPY, USD, EUR 등 복수 통화로의 시뮬레이션이 가능. 국제금융과 통계분석의 관계를 학습할 수 있습니다.",
+                howItWorksTitle: "학습의 흐름",
+                howItWorksSubtitle: "3단계로 통계학습 시작",
+                step1Title: "계정 생성",
+                step1Description: "Google 계정으로 간단 로그인. 바로 학습환경에 접근할 수 있습니다.",
+                step2Title: "학습 설정",
+                step2Description: "언어, 통화, 통계분석 설정을 커스터마이즈. 자신의 페이스로 학습을 시작.",
+                step3Title: "실습 학습",
+                step3Description: "시뮬레이션을 통해 통계이론을 실습. 실시간으로 스킬을 향상시킵니다.",
+                screenshotsTitle: "시스템 화면",
+                screenshotsSubtitle: "직관적이고 사용하기 쉬운 인터페이스",
+                screenshot1Placeholder: "통계분석 대시보드",
+                screenshot1Title: "메인 분석화면",
+                screenshot1Description: "실시간 통계분석과 시각화 기능",
+                screenshot2Placeholder: "위험관리 패널",
+                screenshot2Title: "위험관리 기능",
+                screenshot2Description: "자금관리와 위험평가 실습환경",
+                screenshot3Placeholder: "데이터 이력 그래프",
+                screenshot3Title: "데이터 이력 표시",
+                screenshot3Description: "학습진도와 통계데이터의 이력관리",
+                pricingTitle: "요금 플랜",
+                pricingSubtitle: "통계학습 시스템 이용료금",
+                priceAmount: "【요금】원",
+                pricePeriod: "월액（세금포함）",
+                feature1: "전 통계분석 기능 이용",
+                feature2: "실시간 데이터 시각화",
+                feature3: "6개국어 지원",
+                feature4: "복수 통화 시뮬레이션",
+                feature5: "학습진도 저장・이력관리",
+                feature6: "24시간 365일 액세스",
+                feature7: "모바일・태블릿 지원",
+                feature8: "언제든지 해약 가능",
+                footerLink1: "특정상거래법에 의한 표시",
+                footerLink2: "개인정보보호정책",
+                footerLink3: "이용약관",
+                footerLink4: "문의하기",
+                footerText: "© 2025 【사업자명】 All rights reserved. | 통계학습・교육목적 시뮬레이션 도구"
+            },
+            es: {
+                pageTitle: "Sistema de Aprendizaje Estadístico de Patrones de Baccarat - Herramienta Educativa",
+                pageDescription: "Sistema de aprendizaje de estadísticas y teoría de probabilidades basado en patrones de juego de baccarat. Herramienta educativa práctica para análisis de patrones y teoría de gestión de riesgos.",
+                heroTitle: "Sistema de Aprendizaje Estadístico de Patrones de Baccarat",
+                heroSubtitle: "Herramienta Educativa para Aprendizaje Práctico de Estadísticas y Probabilidades",
+                heroDescription: "Un sistema educativo para aprender análisis estadístico, teoría de probabilidades y gestión de riesgos usando patrones del juego de baccarat. No involucra apuestas reales - propósitos puramente académicos de aprendizaje estadístico.",
+                startLearningText: "Comenzar Aprendizaje",
+                learnMoreText: "Ver Más Funciones",
+                educationalTitle: "🎓 Propósito Educativo - Servicio Sin Apuestas",
+                educationalDescription1: "Este servicio es una herramienta de simulación para aprendizaje estadístico y propósitos educativos. No involucra apuestas reales ni transacciones monetarias.",
+                educationalDescription2: "A través de métodos de análisis de patrones del juego de baccarat, puedes aprender prácticamente estadísticas, teoría de probabilidades y teoría de análisis de datos. Es una herramienta puramente académica y no un casino en línea o sitio de apuestas.",
+                featuresTitle: "Funciones de Aprendizaje",
+                featuresSubtitle: "Funciones ricas para aprendizaje práctico de estadísticas y probabilidades",
+                feature1Title: "Análisis Estadístico de Patrones",
+                feature1Description: "Analiza estadísticamente los patrones de resultados del juego de baccarat y aprende los fundamentos de la teoría de probabilidades. Adquisición práctica de métodos de visualización de datos y análisis de tendencias.",
+                feature2Title: "Teoría de Gestión de Riesgos",
+                feature2Description: "Aprende teoría de gestión de fondos y evaluación de riesgos. Experimenta el establecimiento de límites de pérdida y procesos de toma de decisiones basados en probabilidades.",
+                feature3Title: "Visualización de Datos",
+                feature3Description: "Comprende visualmente los cambios estadísticos a través de funciones de visualización de datos en tiempo real. Mejora las habilidades de interpretación de gráficos y análisis de tendencias.",
+                feature4Title: "Práctica de Cálculo de Probabilidades",
+                feature4Description: "Aprende teoría avanzada de probabilidades como estadísticas bayesianas y teoría de martingala a través de simulaciones reales.",
+                feature5Title: "Soporte Multiidioma",
+                feature5Description: "Soporta 6 idiomas incluyendo japonés, inglés y chino. Proporciona un entorno global de aprendizaje estadístico apoyando comunidades internacionales de aprendizaje.",
+                feature6Title: "Simulación Multi-Moneda",
+                feature6Description: "Simulación posible con múltiples monedas como JPY, USD, EUR. Aprende la relación entre finanzas internacionales y análisis estadístico.",
+                howItWorksTitle: "Proceso de Aprendizaje",
+                howItWorksSubtitle: "Inicia el aprendizaje estadístico en 3 pasos",
+                step1Title: "Creación de Cuenta",
+                step1Description: "Inicio de sesión fácil con cuenta de Google. Acceso inmediato al entorno de aprendizaje.",
+                step2Title: "Configuración de Aprendizaje",
+                step2Description: "Personaliza idioma, moneda y configuraciones de análisis estadístico. Comienza a aprender a tu propio ritmo.",
+                step3Title: "Aprendizaje Práctico",
+                step3Description: "Practica teoría estadística a través de simulación. Mejora habilidades en tiempo real.",
+                screenshotsTitle: "Interfaz del Sistema",
+                screenshotsSubtitle: "Interfaz intuitiva y fácil de usar",
+                screenshot1Placeholder: "Panel de Análisis Estadístico",
+                screenshot1Title: "Pantalla Principal de Análisis",
+                screenshot1Description: "Análisis estadístico en tiempo real y funciones de visualización",
+                screenshot2Placeholder: "Panel de Gestión de Riesgos",
+                screenshot2Title: "Funciones de Gestión de Riesgos",
+                screenshot2Description: "Entorno de práctica de gestión de fondos y evaluación de riesgos",
+                screenshot3Placeholder: "Gráfico de Historial de Datos",
+                screenshot3Title: "Visualización de Historial de Datos",
+                screenshot3Description: "Progreso de aprendizaje y gestión del historial de datos estadísticos",
+                pricingTitle: "Plan de Precios",
+                pricingSubtitle: "Tarifa de Uso del Sistema de Aprendizaje Estadístico",
+                priceAmount: "€【Precio】",
+                pricePeriod: "Mensual (Impuestos Incluidos)",
+                feature1: "Funciones completas de análisis estadístico",
+                feature2: "Visualización de datos en tiempo real",
+                feature3: "Soporte de 6 idiomas",
+                feature4: "Simulación multi-moneda",
+                feature5: "Guardado de progreso de aprendizaje e historial",
+                feature6: "Acceso 24/7",
+                feature7: "Soporte para móvil y tableta",
+                feature8: "Cancelar en cualquier momento",
+                footerLink1: "Ley de Transacciones Comerciales",
+                footerLink2: "Política de Privacidad",
+                footerLink3: "Términos de Servicio",
+                footerLink4: "Contacto",
+                footerText: "© 2025 【Nombre de la Empresa】 Todos los derechos reservados. | Herramienta de Simulación de Aprendizaje Estadístico y Educativo"
+            },
+            fr: {
+                pageTitle: "Système d'Apprentissage Statistique des Motifs de Baccarat - Outil Éducatif",
+                pageDescription: "Système d'apprentissage des statistiques et de la théorie des probabilités basé sur les motifs du jeu de baccarat. Outil éducatif pratique pour l'analyse des motifs et la théorie de gestion des risques.",
+                heroTitle: "Système d'Apprentissage Statistique des Motifs de Baccarat",
+                heroSubtitle: "Outil Éducatif pour l'Apprentissage Pratique des Statistiques et Probabilités",
+                heroDescription: "Un système éducatif pour apprendre l'analyse statistique, la théorie des probabilités et la gestion des risques en utilisant les motifs du jeu de baccarat. Aucun jeu réel impliqué - objectifs purement académiques d'apprentissage statistique.",
+                startLearningText: "Commencer l'Apprentissage",
+                learnMoreText: "En Savoir Plus sur les Fonctionnalités",
+                educationalTitle: "🎓 Objectif Éducatif - Service Sans Jeu",
+                educationalDescription1: "Ce service est un outil de simulation à des fins d'apprentissage statistique et éducatives. Aucun jeu réel ni transaction monétaire impliqué.",
+                educationalDescription2: "Grâce aux méthodes d'analyse des motifs du jeu de baccarat, vous pouvez apprendre pratiquement les statistiques, la théorie des probabilités et la théorie de l'analyse de données. Il s'agit d'un outil purement académique et non d'un casino en ligne ou d'un site de jeu.",
+                featuresTitle: "Fonctionnalités d'Apprentissage",
+                featuresSubtitle: "Fonctionnalités riches pour l'apprentissage pratique des statistiques et probabilités",
+                feature1Title: "Analyse Statistique des Motifs",
+                feature1Description: "Analysez statistiquement les motifs de résultats du jeu de baccarat et apprenez les fondamentaux de la théorie des probabilités. Acquisition pratique des méthodes de visualisation de données et d'analyse des tendances.",
+                feature2Title: "Théorie de Gestion des Risques",
+                feature2Description: "Apprenez la théorie de gestion des fonds et d'évaluation des risques. Expérimentez l'établissement de limites de perte et les processus de prise de décision basés sur les probabilités.",
+                feature3Title: "Visualisation de Données",
+                feature3Description: "Comprenez visuellement les changements statistiques grâce aux fonctionnalités de visualisation de données en temps réel. Améliorez les compétences d'interprétation graphique et d'analyse des tendances.",
+                feature4Title: "Pratique de Calcul de Probabilités",
+                feature4Description: "Apprenez la théorie avancée des probabilités comme les statistiques bayésiennes et la théorie de martingale à travers des simulations réelles.",
+                feature5Title: "Support Multilingue",
+                feature5Description: "Supporte 6 langues incluant japonais, anglais et chinois. Fournit un environnement d'apprentissage statistique global supportant les communautés d'apprentissage internationales.",
+                feature6Title: "Simulation Multi-Devises",
+                feature6Description: "Simulation possible avec plusieurs devises comme JPY, USD, EUR. Apprenez la relation entre finance internationale et analyse statistique.",
+                howItWorksTitle: "Processus d'Apprentissage",
+                howItWorksSubtitle: "Commencez l'apprentissage statistique en 3 étapes",
+                step1Title: "Création de Compte",
+                step1Description: "Connexion facile avec compte Google. Accès immédiat à l'environnement d'apprentissage.",
+                step2Title: "Configuration d'Apprentissage",
+                step2Description: "Personnalisez langue, devise et paramètres d'analyse statistique. Commencez à apprendre à votre propre rythme.",
+                step3Title: "Apprentissage Pratique",
+                step3Description: "Pratiquez la théorie statistique par simulation. Améliorez vos compétences en temps réel.",
+                screenshotsTitle: "Interface Système",
+                screenshotsSubtitle: "Interface intuitive et conviviale",
+                screenshot1Placeholder: "Tableau de Bord d'Analyse Statistique",
+                screenshot1Title: "Écran d'Analyse Principal",
+                screenshot1Description: "Analyse statistique en temps réel et fonctionnalités de visualisation",
+                screenshot2Placeholder: "Panneau de Gestion des Risques",
+                screenshot2Title: "Fonctionnalités de Gestion des Risques",
+                screenshot2Description: "Environnement de pratique de gestion de fonds et d'évaluation des risques",
+                screenshot3Placeholder: "Graphique d'Historique de Données",
+                screenshot3Title: "Affichage de l'Historique des Données",
+                screenshot3Description: "Progrès d'apprentissage et gestion de l'historique des données statistiques",
+                pricingTitle: "Plan Tarifaire",
+                pricingSubtitle: "Frais d'Utilisation du Système d'Apprentissage Statistique",
+                priceAmount: "€【Prix】",
+                pricePeriod: "Mensuel (Taxes Incluses)",
+                feature1: "Fonctionnalités complètes d'analyse statistique",
+                feature2: "Visualisation de données en temps réel",
+                feature3: "Support de 6 langues",
+                feature4: "Simulation multi-devises",
+                feature5: "Sauvegarde du progrès d'apprentissage et historique",
+                feature6: "Accès 24h/24 7j/7",
+                feature7: "Support mobile et tablette",
+                feature8: "Annulation à tout moment",
+                footerLink1: "Loi sur les Transactions Commerciales",
+                footerLink2: "Politique de Confidentialité",
+                footerLink3: "Conditions de Service",
+                footerLink4: "Contact",
+                footerText: "© 2025 【Nom de l'Entreprise】 Tous droits réservés. | Outil de Simulation d'Apprentissage Statistique et Éducatif"
+            }
+        };
+
+        // 言語切り替え機能
+        function changeLanguage(lang) {
+            const translation = translations[lang];
+            if (!translation) return;
+
+            // ページタイトルとメタ情報を更新
+            document.title = translation.pageTitle;
+            document.getElementById('page-title').textContent = translation.pageTitle;
+            document.getElementById('page-description').setAttribute('content', translation.pageDescription);
+
+            // 各要素を更新
+            const elements = {
+                'heroTitle': 'heroTitle',
+                'heroSubtitle': 'heroSubtitle',
+                'heroDescription': 'heroDescription',
+                'startLearningText': 'startLearningText',
+                'learnMoreText': 'learnMoreText',
+                'educationalTitle': 'educationalTitle',
+                'educationalDescription1': 'educationalDescription1',
+                'educationalDescription2': 'educationalDescription2',
+                'featuresTitle': 'featuresTitle',
+                'featuresSubtitle': 'featuresSubtitle',
+                'feature1Title': 'feature1Title',
+                'feature1Description': 'feature1Description',
+                'feature2Title': 'feature2Title',
+                'feature2Description': 'feature2Description',
+                'feature3Title': 'feature3Title',
+                'feature3Description': 'feature3Description',
+                'feature4Title': 'feature4Title',
+                'feature4Description': 'feature4Description',
+                'feature5Title': 'feature5Title',
+                'feature5Description': 'feature5Description',
+                'feature6Title': 'feature6Title',
+                'feature6Description': 'feature6Description',
+                'howItWorksTitle': 'howItWorksTitle',
+                'howItWorksSubtitle': 'howItWorksSubtitle',
+                'step1Title': 'step1Title',
+                'step1Description': 'step1Description',
+                'step2Title': 'step2Title',
+                'step2Description': 'step2Description',
+                'step3Title': 'step3Title',
+                'step3Description': 'step3Description',
+                'screenshotsTitle': 'screenshotsTitle',
+                'screenshotsSubtitle': 'screenshotsSubtitle',
+                'screenshot1Placeholder': 'screenshot1Placeholder',
+                'screenshot1Title': 'screenshot1Title',
+                'screenshot1Description': 'screenshot1Description',
+                'screenshot2Placeholder': 'screenshot2Placeholder',
+                'screenshot2Title': 'screenshot2Title',
+                'screenshot2Description': 'screenshot2Description',
+                'screenshot3Placeholder': 'screenshot3Placeholder',
+                'screenshot3Title': 'screenshot3Title',
+                'screenshot3Description': 'screenshot3Description',
+                'pricingTitle': 'pricingTitle',
+                'pricingSubtitle': 'pricingSubtitle',
+                'priceAmount': 'priceAmount',
+                'pricePeriod': 'pricePeriod',
+                'feature1': 'feature1',
+                'feature2': 'feature2',
+                'feature3': 'feature3',
+                'feature4': 'feature4',
+                'feature5': 'feature5',
+                'feature6': 'feature6',
+                'feature7': 'feature7',
+                'feature8': 'feature8',
+                'footerLink1': 'footerLink1',
+                'footerLink2': 'footerLink2',
+                'footerLink3': 'footerLink3',
+                'footerLink4': 'footerLink4',
+                'footerText': 'footerText'
+            };
+
+            // 各要素のテキストを更新
+            Object.keys(elements).forEach(elementId => {
+                const element = document.getElementById(elementId);
+                if (element && translation[elements[elementId]]) {
+                    element.textContent = translation[elements[elementId]];
+                }
+            });
+
+            // 重複するstartLearningTextの処理
+            const startLearningText2 = document.getElementById('startLearningText2');
+            if (startLearningText2 && translation.startLearningText) {
+                startLearningText2.textContent = translation.startLearningText;
+            }
+
+            // 言語選択を保存
+            localStorage.setItem('selectedLanguage', lang);
+            
+            // HTML lang属性を更新
+            document.documentElement.lang = lang;
+        }
+
+        // ページ読み込み時の処理
+        document.addEventListener('DOMContentLoaded', function() {
+            const languageSelect = document.getElementById('languageSelect');
+            
+            // 保存された言語を復元
+            const savedLanguage = localStorage.getItem('selectedLanguage') || 'ja';
+            languageSelect.value = savedLanguage;
+            changeLanguage(savedLanguage);
+
+            // 言語変更イベントリスナーを追加
+            languageSelect.addEventListener('change', function() {
+                changeLanguage(this.value);
+            });
+        });
+    </script>
+</body>
+</html>
+                

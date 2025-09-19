@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>プライバシーポリシー | バカラパターン統計学習システム</title>
+    <title id="page-title">プライバシーポリシー | バカラパターン統計学習システム</title>
+    <meta name="description" id="page-description" content="バカラパターン統計学習システムのプライバシーポリシーです。個人情報の取り扱いについて説明します。">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <style>
         * {
@@ -31,6 +32,43 @@
                 radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
                 radial-gradient(circle at 80% 20%, rgba(255, 107, 107, 0.15) 0%, transparent 50%);
             z-index: -1;
+        }
+
+        .language-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 12px;
+        }
+
+        .language-select {
+            background: transparent;
+            color: white;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .language-select:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .language-select:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.5);
+        }
+
+        .language-select option {
+            background: #1f2937;
+            color: white;
         }
 
         .container {
@@ -186,6 +224,11 @@
         }
 
         @media (max-width: 768px) {
+            .language-switcher {
+                top: 10px;
+                right: 10px;
+            }
+
             .container {
                 padding: 20px 15px;
             }
@@ -201,17 +244,29 @@
     </style>
 </head>
 <body>
+    <!-- Language Switcher -->
+    <div class="language-switcher">
+        <select id="languageSelect" class="language-select">
+            <option value="ja">🇯🇵 日本語</option>
+            <option value="en">🇺🇸 English</option>
+            <option value="zh">🇨🇳 中文</option>
+            <option value="ko">🇰🇷 한국어</option>
+            <option value="es">🇪🇸 Español</option>
+            <option value="fr">🇫🇷 Français</option>
+        </select>
+    </div>
+
     <div class="container">
         <div class="header">
-            <h1 class="title">プライバシーポリシー</h1>
-            <p class="subtitle">バカラパターン統計学習システム</p>
+            <h1 class="title" id="mainTitle">プライバシーポリシー</h1>
+            <p class="subtitle" id="mainSubtitle">バカラパターン統計学習システム</p>
         </div>
 
         <div class="content-card">
             <!-- サービスの性質について -->
             <div class="important-notice">
-                <h3>サービスの性質について</h3>
-                <p>
+                <h3 id="serviceNatureTitle">サービスの性質について</h3>
+                <p id="serviceNatureContent">
                     <strong>本サービスは統計学習・教育目的のシミュレーションツールです。</strong>
                     実際の賭博行為や金銭の授受は一切行いません。バカラゲームのパターン分析手法を学習するための教材として提供しております。
                 </p>
@@ -219,9 +274,9 @@
 
             <!-- 個人情報の取り扱い -->
             <div class="section">
-                <h2 class="section-title">個人情報の取り扱いについて</h2>
+                <h2 class="section-title" id="privacyHandlingTitle">個人情報の取り扱いについて</h2>
                 <div class="section-content">
-                    <p>
+                    <p id="privacyHandlingContent">
                         【事業者名】（以下「当社」）は、バカラパターン統計学習システム（以下「本サービス」）の提供にあたり、
                         ユーザーの皆様の個人情報の保護を重要な責務と考え、以下のプライバシーポリシーを定めます。
                     </p>
@@ -230,169 +285,56 @@
 
             <!-- 取得する個人情報 -->
             <div class="section">
-                <h2 class="section-title">取得する個人情報</h2>
+                <h2 class="section-title" id="collectDataTitle">取得する個人情報</h2>
                 <div class="section-content">
-                    <p><strong class="highlight">1. Googleアカウント連携による情報</strong></p>
-                    <ul>
-                        <li>Googleアカウントのメールアドレス</li>
-                        <li>Googleアカウントの表示名</li>
-                        <li>Googleアカウントのプロフィール画像URL</li>
+                    <p id="googleAccountTitle"><strong class="highlight">1. Googleアカウント連携による情報</strong></p>
+                    <ul id="googleAccountList">
+                        <li id="googleAccountEmail">Googleアカウントのメールアドレス</li>
+                        <li id="googleAccountName">Googleアカウントの表示名</li>
+                        <li id="googleAccountImage">Googleアカウントのプロフィール画像URL</li>
                     </ul>
 
-                    <p><strong class="highlight">2. サービス利用状況データ</strong></p>
-                    <ul>
-                        <li>学習進捗データ</li>
-                        <li>統計分析結果の履歴</li>
-                        <li>システム利用ログ</li>
-                        <li>言語・通貨設定等の環境設定</li>
+                    <p id="usageDataTitle"><strong class="highlight">2. サービス利用状況データ</strong></p>
+                    <ul id="usageDataList">
+                        <li id="usageDataProgress">学習進捗データ</li>
+                        <li id="usageDataHistory">統計分析結果の履歴</li>
+                        <li id="usageDataLog">システム利用ログ</li>
+                        <li id="usageDataSettings">言語・通貨設定等の環境設定</li>
                     </ul>
 
-                    <p><strong class="highlight">3. 決済関連情報</strong></p>
-                    <ul>
-                        <li>Stripeを通じた決済処理情報（当社では保存しません）</li>
-                        <li>サブスクリプション契約状況</li>
+                    <p id="paymentDataTitle"><strong class="highlight">3. 決済関連情報</strong></p>
+                    <ul id="paymentDataList">
+                        <li id="paymentDataStripe">Stripeを通じた決済処理情報（当社では保存しません）</li>
+                        <li id="paymentDataSubscription">サブスクリプション契約状況</li>
                     </ul>
                 </div>
             </div>
 
-            <!-- 個人情報の利用目的 -->
+            <!-- 利用目的 -->
             <div class="section">
-                <h2 class="section-title">個人情報の利用目的</h2>
+                <h2 class="section-title" id="usagePurposeTitle">個人情報の利用目的</h2>
                 <div class="section-content">
-                    <ul>
-                        <li>本サービスの提供・運営</li>
-                        <li>ユーザー認証・ログイン機能の提供</li>
-                        <li>学習進捗の保存・管理</li>
-                        <li>統計分析機能の個人カスタマイズ</li>
-                        <li>サービス改善のためのデータ分析</li>
-                        <li>お客様サポート対応</li>
-                        <li>重要なお知らせの配信</li>
-                        <li>不正利用防止・セキュリティ確保</li>
+                    <ul id="usagePurposeList">
+                        <li id="usagePurpose1">本サービスの提供・運営</li>
+                        <li id="usagePurpose2">ユーザー認証・ログイン機能の提供</li>
+                        <li id="usagePurpose3">学習進捗の保存・管理</li>
+                        <li id="usagePurpose4">統計分析機能の個人カスタマイズ</li>
+                        <li id="usagePurpose5">サービス改善のためのデータ分析</li>
+                        <li id="usagePurpose6">お客様サポート対応</li>
+                        <li id="usagePurpose7">重要なお知らせの配信</li>
+                        <li id="usagePurpose8">不正利用防止・セキュリティ確保</li>
                     </ul>
                 </div>
             </div>
 
-            <!-- 個人情報の管理・保護 -->
+            <!-- 連絡先情報 -->
             <div class="section">
-                <h2 class="section-title">個人情報の管理・保護</h2>
+                <h2 class="section-title" id="contactTitle">お問い合わせ</h2>
                 <div class="section-content">
-                    <p>
-                        当社は、取得した個人情報について、適切なセキュリティ対策を実施し、
-                        不正アクセス、漏洩、改ざん、紛失等を防止するため、以下の対策を講じています。
-                    </p>
-                    <ul>
-                        <li>SSL/TLSによる通信の暗号化</li>
-                        <li>アクセス制御・認証システムの導入</li>
-                        <li>定期的なセキュリティ監査の実施</li>
-                        <li>従業員に対する適切な教育・研修</li>
-                        <li>クラウドサービス（AWS等）の利用によるセキュア環境の確保</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- 第三者提供について -->
-            <div class="section">
-                <h2 class="section-title">第三者への提供について</h2>
-                <div class="section-content">
-                    <p>
-                        当社は、以下の場合を除き、ユーザーの個人情報を第三者に提供することはありません。
-                    </p>
-                    <ul>
-                        <li>ユーザーご本人の同意がある場合</li>
-                        <li>法令に基づく場合</li>
-                        <li>人の生命、身体又は財産の保護のために必要がある場合</li>
-                        <li>サービス提供のために必要な業務委託先への提供（適切な管理下での提供）</li>
-                    </ul>
-
-                    <p><strong class="highlight">外部サービスの利用</strong></p>
-                    <p>本サービスでは以下の外部サービスを利用しており、それぞれのプライバシーポリシーが適用されます。</p>
-                    <ul>
-                        <li>Google Sign-In（ユーザー認証）</li>
-                        <li>Stripe（決済処理）</li>
-                        <li>AWS（データホスティング）</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Cookie・アクセス解析 -->
-            <div class="section">
-                <h2 class="section-title">Cookie・アクセス解析について</h2>
-                <div class="section-content">
-                    <p>
-                        本サービスでは、サービスの利便性向上とアクセス解析のため、
-                        Cookie及び類似の技術を使用する場合があります。
-                    </p>
-                    <ul>
-                        <li>ログイン状態の維持</li>
-                        <li>ユーザー設定の保存</li>
-                        <li>サービス利用状況の分析</li>
-                    </ul>
-                    <p>
-                        Cookieの使用を望まない場合は、ブラウザの設定により無効にすることができますが、
-                        一部機能が制限される可能性があります。
-                    </p>
-                </div>
-            </div>
-
-            <!-- 個人情報の開示・訂正・削除 -->
-            <div class="section">
-                <h2 class="section-title">個人情報の開示・訂正・削除について</h2>
-                <div class="section-content">
-                    <p>
-                        ユーザーは、当社が保有するご自身の個人情報について、以下の権利を有します。
-                    </p>
-                    <ul>
-                        <li>個人情報の開示請求</li>
-                        <li>個人情報の訂正・追加・削除請求</li>
-                        <li>個人情報の利用停止・消去請求</li>
-                        <li>アカウント削除による全データの削除</li>
-                    </ul>
-                    <p>
-                        これらのご請求については、本人確認を行った上で、法令の定めに従い、遅滞なく対応いたします。
-                        ご請求は下記お問い合わせ先までご連絡ください。
-                    </p>
-                </div>
-            </div>
-
-            <!-- データの保存期間 -->
-            <div class="section">
-                <h2 class="section-title">データの保存期間</h2>
-                <div class="section-content">
-                    <ul>
-                        <li>アカウント情報：サービス利用期間中</li>
-                        <li>学習データ・統計分析履歴：サービス利用期間中</li>
-                        <li>ログデータ：収集から6ヶ月間</li>
-                        <li>削除されたデータ：30日後に完全削除</li>
-                    </ul>
-                    <p>
-                        アカウント削除後は、法令で保存が義務付けられているものを除き、
-                        速やかに個人情報を削除いたします。
-                    </p>
-                </div>
-            </div>
-
-            <!-- プライバシーポリシーの変更 -->
-            <div class="section">
-                <h2 class="section-title">プライバシーポリシーの変更</h2>
-                <div class="section-content">
-                    <p>
-                        当社は、法令の変更や事業内容の変更等に伴い、本プライバシーポリシーを変更することがあります。
-                        重要な変更については、サービス内での通知やメール等により事前にお知らせいたします。
-                    </p>
-                    <p>
-                        変更後のプライバシーポリシーは、本ページに掲載した時点で効力を生じるものとします。
-                    </p>
-                </div>
-            </div>
-
-            <!-- お問い合わせ -->
-            <div class="section">
-                <h2 class="section-title">お問い合わせ</h2>
-                <div class="section-content">
-                    <p>
+                    <p id="contactContent">
                         本プライバシーポリシーに関するお問い合わせは、以下までご連絡ください。
                     </p>
-                    <p>
+                    <p id="contactInfo">
                         <strong>【事業者名】</strong><br>
                         <strong>【サポートメールアドレスを記載】</strong><br>
                         営業時間：平日10:00-18:00（土日祝日除く）
@@ -400,10 +342,337 @@
                 </div>
             </div>
 
-            <a href="./index.html" class="back-button">
+            <a href="./index.html" class="back-button" id="backButton">
                 ← サービス紹介ページに戻る
             </a>
         </div>
     </div>
+
+    <script>
+        // 翻訳データ
+        const translations = {
+            ja: {
+                pageTitle: "プライバシーポリシー | バカラパターン統計学習システム",
+                pageDescription: "バカラパターン統計学習システムのプライバシーポリシーです。個人情報の取り扱いについて説明します。",
+                mainTitle: "プライバシーポリシー",
+                mainSubtitle: "バカラパターン統計学習システム",
+                serviceNatureTitle: "サービスの性質について",
+                serviceNatureContent: "本サービスは統計学習・教育目的のシミュレーションツールです。実際の賭博行為や金銭の授受は一切行いません。バカラゲームのパターン分析手法を学習するための教材として提供しております。",
+                privacyHandlingTitle: "個人情報の取り扱いについて",
+                privacyHandlingContent: "【事業者名】（以下「当社」）は、バカラパターン統計学習システム（以下「本サービス」）の提供にあたり、ユーザーの皆様の個人情報の保護を重要な責務と考え、以下のプライバシーポリシーを定めます。",
+                collectDataTitle: "取得する個人情報",
+                googleAccountTitle: "1. Googleアカウント連携による情報",
+                googleAccountEmail: "Googleアカウントのメールアドレス",
+                googleAccountName: "Googleアカウントの表示名",
+                googleAccountImage: "Googleアカウントのプロフィール画像URL",
+                usageDataTitle: "2. サービス利用状況データ",
+                usageDataProgress: "学習進捗データ",
+                usageDataHistory: "統計分析結果の履歴",
+                usageDataLog: "システム利用ログ",
+                usageDataSettings: "言語・通貨設定等の環境設定",
+                paymentDataTitle: "3. 決済関連情報",
+                paymentDataStripe: "Stripeを通じた決済処理情報（当社では保存しません）",
+                paymentDataSubscription: "サブスクリプション契約状況",
+                usagePurposeTitle: "個人情報の利用目的",
+                usagePurpose1: "本サービスの提供・運営",
+                usagePurpose2: "ユーザー認証・ログイン機能の提供",
+                usagePurpose3: "学習進捗の保存・管理",
+                usagePurpose4: "統計分析機能の個人カスタマイズ",
+                usagePurpose5: "サービス改善のためのデータ分析",
+                usagePurpose6: "お客様サポート対応",
+                usagePurpose7: "重要なお知らせの配信",
+                usagePurpose8: "不正利用防止・セキュリティ確保",
+                contactTitle: "お問い合わせ",
+                contactContent: "本プライバシーポリシーに関するお問い合わせは、以下までご連絡ください。",
+                contactInfo: "【事業者名】\n【サポートメールアドレスを記載】\n営業時間：平日10:00-18:00（土日祝日除く）",
+                backButton: "← サービス紹介ページに戻る"
+            },
+            en: {
+                pageTitle: "Privacy Policy | Baccarat Pattern Statistical Learning System",
+                pageDescription: "Privacy policy for the Baccarat Pattern Statistical Learning System. Explains how personal information is handled.",
+                mainTitle: "Privacy Policy",
+                mainSubtitle: "Baccarat Pattern Statistical Learning System",
+                serviceNatureTitle: "About Service Nature",
+                serviceNatureContent: "This service is a simulation tool for statistical learning and educational purposes. No actual gambling or monetary transactions are involved. It is provided as educational material for learning baccarat game pattern analysis methods.",
+                privacyHandlingTitle: "About Handling Personal Information",
+                privacyHandlingContent: "[Company Name] (\"Company\") considers the protection of users' personal information as an important responsibility in providing the Baccarat Pattern Statistical Learning System (\"Service\") and establishes the following privacy policy.",
+                collectDataTitle: "Personal Information We Collect",
+                googleAccountTitle: "1. Information from Google Account Integration",
+                googleAccountEmail: "Google account email address",
+                googleAccountName: "Google account display name",
+                googleAccountImage: "Google account profile image URL",
+                usageDataTitle: "2. Service Usage Data",
+                usageDataProgress: "Learning progress data",
+                usageDataHistory: "Statistical analysis result history",
+                usageDataLog: "System usage logs",
+                usageDataSettings: "Environment settings such as language and currency",
+                paymentDataTitle: "3. Payment Related Information",
+                paymentDataStripe: "Payment processing information through Stripe (not stored by our company)",
+                paymentDataSubscription: "Subscription contract status",
+                usagePurposeTitle: "Purpose of Personal Information Use",
+                usagePurpose1: "Provision and operation of this service",
+                usagePurpose2: "User authentication and login functionality",
+                usagePurpose3: "Saving and managing learning progress",
+                usagePurpose4: "Personal customization of statistical analysis functions",
+                usagePurpose5: "Data analysis for service improvement",
+                usagePurpose6: "Customer support response",
+                usagePurpose7: "Distribution of important notifications",
+                usagePurpose8: "Fraud prevention and security assurance",
+                contactTitle: "Contact",
+                contactContent: "For inquiries regarding this Privacy Policy, please contact us at:",
+                contactInfo: "[Company Name]\n[Support Email Address]\nBusiness Hours: Weekdays 10:00-18:00 (excluding weekends and holidays)",
+                backButton: "← Back to Service Introduction Page"
+            },
+            zh: {
+                pageTitle: "隐私政策 | 百家乐模式统计学习系统",
+                pageDescription: "百家乐模式统计学习系统的隐私政策。说明个人信息的处理方式。",
+                mainTitle: "隐私政策",
+                mainSubtitle: "百家乐模式统计学习系统",
+                serviceNatureTitle: "关于服务性质",
+                serviceNatureContent: "本服务是用于统计学习・教育目的的模拟工具。不涉及实际的赌博行为或金钱交易。作为学习百家乐游戏模式分析方法的教材提供。",
+                privacyHandlingTitle: "关于个人信息处理",
+                privacyHandlingContent: "【事业者名】（以下称\"本公司\"）在提供百家乐模式统计学习系统（以下称\"本服务\"）时，将用户个人信息保护视为重要责任，制定以下隐私政策。",
+                collectDataTitle: "收集的个人信息",
+                googleAccountTitle: "1. 通过Google账户集成获得的信息",
+                googleAccountEmail: "Google账户邮箱地址",
+                googleAccountName: "Google账户显示名称",
+                googleAccountImage: "Google账户头像URL",
+                usageDataTitle: "2. 服务使用状况数据",
+                usageDataProgress: "学习进度数据",
+                usageDataHistory: "统计分析结果历史",
+                usageDataLog: "系统使用日志",
+                usageDataSettings: "语言・货币设置等环境配置",
+                paymentDataTitle: "3. 支付相关信息",
+                paymentDataStripe: "通过Stripe的支付处理信息（本公司不保存）",
+                paymentDataSubscription: "订阅合同状况",
+                usagePurposeTitle: "个人信息使用目的",
+                usagePurpose1: "本服务的提供・运营",
+                usagePurpose2: "用户认证・登录功能的提供",
+                usagePurpose3: "学习进度的保存・管理",
+                usagePurpose4: "统计分析功能的个人定制",
+                usagePurpose5: "用于服务改善的数据分析",
+                usagePurpose6: "客户支持对应",
+                usagePurpose7: "重要通知的发送",
+                usagePurpose8: "防止不当使用・确保安全",
+                contactTitle: "联系我们",
+                contactContent: "关于本隐私政策的咨询，请联系以下地址。",
+                contactInfo: "【事业者名】\n【支持邮件地址】\n营业时间：平日10:00-18:00（除土日节假日）",
+                backButton: "← 返回服务介绍页面"
+            },
+            ko: {
+                pageTitle: "개인정보보호정책 | 바카라 패턴 통계학습 시스템",
+                pageDescription: "바카라 패턴 통계학습 시스템의 개인정보보호정책입니다. 개인정보 처리방법에 대해 설명합니다.",
+                mainTitle: "개인정보보호정책",
+                mainSubtitle: "바카라 패턴 통계학습 시스템",
+                serviceNatureTitle: "서비스 성질에 대해",
+                serviceNatureContent: "본 서비스는 통계학습・교육목적의 시뮬레이션 도구입니다. 실제 도박행위나 금전 거래는 일체 하지 않습니다. 바카라 게임의 패턴분석 기법을 학습하기 위한 교재로 제공하고 있습니다.",
+                privacyHandlingTitle: "개인정보 처리에 대해",
+                privacyHandlingContent: "【사업자명】（이하 「당사」）는 바카라 패턴 통계학습 시스템（이하 「본 서비스」）의 제공에 있어서, 사용자 여러분의 개인정보 보호를 중요한 책무로 생각하고, 다음 개인정보보호정책을 정합니다.",
+                collectDataTitle: "수집하는 개인정보",
+                googleAccountTitle: "1. Google 계정 연동에 의한 정보",
+                googleAccountEmail: "Google 계정의 메일주소",
+                googleAccountName: "Google 계정의 표시명",
+                googleAccountImage: "Google 계정의 프로필 이미지 URL",
+                usageDataTitle: "2. 서비스 이용상황 데이터",
+                usageDataProgress: "학습진도 데이터",
+                usageDataHistory: "통계분석 결과의 이력",
+                usageDataLog: "시스템 이용 로그",
+                usageDataSettings: "언어・통화설정 등의 환경설정",
+                paymentDataTitle: "3. 결제관련 정보",
+                paymentDataStripe: "Stripe를 통한 결제처리 정보（당사에서는 보존하지 않습니다）",
+                paymentDataSubscription: "구독계약 상황",
+                usagePurposeTitle: "개인정보 이용목적",
+                usagePurpose1: "본 서비스의 제공・운영",
+                usagePurpose2: "사용자 인증・로그인 기능의 제공",
+                usagePurpose3: "학습진도의 저장・관리",
+                usagePurpose4: "통계분석 기능의 개인 커스터마이즈",
+                usagePurpose5: "서비스 개선을 위한 데이터 분석",
+                usagePurpose6: "고객 서포트 대응",
+                usagePurpose7: "중요한 알림의 배신",
+                usagePurpose8: "부정이용 방지・보안 확보",
+                contactTitle: "문의하기",
+                contactContent: "본 개인정보보호정책에 관한 문의는 다음으로 연락해주세요.",
+                contactInfo: "【사업자명】\n【서포트 메일주소】\n영업시간：평일10:00-18:00（토일공휴일 제외）",
+                backButton: "← 서비스 소개페이지로 돌아가기"
+            },
+            es: {
+                pageTitle: "Política de Privacidad | Sistema de Aprendizaje Estadístico de Patrones de Baccarat",
+                pageDescription: "Política de privacidad del Sistema de Aprendizaje Estadístico de Patrones de Baccarat. Explica cómo se maneja la información personal.",
+                mainTitle: "Política de Privacidad",
+                mainSubtitle: "Sistema de Aprendizaje Estadístico de Patrones de Baccarat",
+                serviceNatureTitle: "Sobre la Naturaleza del Servicio",
+                serviceNatureContent: "Este servicio es una herramienta de simulación para aprendizaje estadístico y propósitos educativos. No involucra apuestas reales ni transacciones monetarias. Se proporciona como material educativo para aprender métodos de análisis de patrones del juego de baccarat.",
+                privacyHandlingTitle: "Sobre el Manejo de Información Personal",
+                privacyHandlingContent: "[Nombre de la Empresa] (\"Empresa\") considera la protección de la información personal de los usuarios como una responsabilidad importante al proporcionar el Sistema de Aprendizaje Estadístico de Patrones de Baccarat (\"Servicio\") y establece la siguiente política de privacidad.",
+                collectDataTitle: "Información Personal que Recopilamos",
+                googleAccountTitle: "1. Información de Integración de Cuenta de Google",
+                googleAccountEmail: "Dirección de correo electrónico de la cuenta de Google",
+                googleAccountName: "Nombre de visualización de la cuenta de Google",
+                googleAccountImage: "URL de imagen de perfil de la cuenta de Google",
+                usageDataTitle: "2. Datos de Uso del Servicio",
+                usageDataProgress: "Datos de progreso de aprendizaje",
+                usageDataHistory: "Historial de resultados de análisis estadístico",
+                usageDataLog: "Registros de uso del sistema",
+                usageDataSettings: "Configuraciones de entorno como idioma y moneda",
+                paymentDataTitle: "3. Información Relacionada con Pagos",
+                paymentDataStripe: "Información de procesamiento de pagos a través de Stripe (no almacenada por nuestra empresa)",
+                paymentDataSubscription: "Estado del contrato de suscripción",
+                usagePurposeTitle: "Propósito del Uso de Información Personal",
+                usagePurpose1: "Provisión y operación de este servicio",
+                usagePurpose2: "Autenticación de usuario y funcionalidad de inicio de sesión",
+                usagePurpose3: "Guardado y gestión del progreso de aprendizaje",
+                usagePurpose4: "Personalización personal de funciones de análisis estadístico",
+                usagePurpose5: "Análisis de datos para mejora del servicio",
+                usagePurpose6: "Respuesta de soporte al cliente",
+                usagePurpose7: "Distribución de notificaciones importantes",
+                usagePurpose8: "Prevención de fraude y garantía de seguridad",
+                contactTitle: "Contacto",
+                contactContent: "Para consultas sobre esta Política de Privacidad, contáctenos en:",
+                contactInfo: "[Nombre de la Empresa]\n[Dirección de Email de Soporte]\nHorario de Atención: Días laborables 10:00-18:00 (excluyendo fines de semana y feriados)",
+                backButton: "← Volver a la Página de Introducción del Servicio"
+            },
+            fr: {
+                pageTitle: "Politique de Confidentialité | Système d'Apprentissage Statistique des Motifs de Baccarat",
+                pageDescription: "Politique de confidentialité du Système d'Apprentissage Statistique des Motifs de Baccarat. Explique comment les informations personnelles sont traitées.",
+                mainTitle: "Politique de Confidentialité",
+                mainSubtitle: "Système d'Apprentissage Statistique des Motifs de Baccarat",
+                serviceNatureTitle: "À propos de la Nature du Service",
+                serviceNatureContent: "Ce service est un outil de simulation à des fins d'apprentissage statistique et éducatives. Aucun jeu réel ni transaction monétaire n'est impliqué. Il est fourni comme matériel éducatif pour apprendre les méthodes d'analyse des motifs du jeu de baccarat.",
+                privacyHandlingTitle: "À propos du Traitement des Informations Personnelles",
+                privacyHandlingContent: "[Nom de l'Entreprise] (\"Entreprise\") considère la protection des informations personnelles des utilisateurs comme une responsabilité importante dans la fourniture du Système d'Apprentissage Statistique des Motifs de Baccarat (\"Service\") et établit la politique de confidentialité suivante.",
+                collectDataTitle: "Informations Personnelles que Nous Collectons",
+                googleAccountTitle: "1. Informations d'Intégration de Compte Google",
+                googleAccountEmail: "Adresse email du compte Google",
+                googleAccountName: "Nom d'affichage du compte Google",
+                googleAccountImage: "URL d'image de profil du compte Google",
+                usageDataTitle: "2. Données d'Utilisation du Service",
+                usageDataProgress: "Données de progrès d'apprentissage",
+                usageDataHistory: "Historique des résultats d'analyse statistique",
+                usageDataLog: "Journaux d'utilisation du système",
+                usageDataSettings: "Paramètres d'environnement tels que langue et devise",
+                paymentDataTitle: "3. Informations Liées aux Paiements",
+                paymentDataStripe: "Informations de traitement des paiements via Stripe (non stockées par notre entreprise)",
+                paymentDataSubscription: "Statut du contrat d'abonnement",
+                usagePurposeTitle: "Objectif d'Utilisation des Informations Personnelles",
+                usagePurpose1: "Fourniture et exploitation de ce service",
+                usagePurpose2: "Authentification utilisateur et fonctionnalité de connexion",
+                usagePurpose3: "Sauvegarde et gestion du progrès d'apprentissage",
+                usagePurpose4: "Personnalisation personnelle des fonctions d'analyse statistique",
+                usagePurpose5: "Analyse de données pour l'amélioration du service",
+                usagePurpose6: "Réponse au support client",
+                usagePurpose7: "Distribution de notifications importantes",
+                usagePurpose8: "Prévention de la fraude et garantie de sécurité",
+                contactTitle: "Contact",
+                contactContent: "Pour les demandes concernant cette Politique de Confidentialité, veuillez nous contacter à :",
+                contactInfo: "[Nom de l'Entreprise]\n[Adresse Email de Support]\nHeures d'Ouverture : Jours ouvrables 10:00-18:00 (excluant week-ends et jours fériés)",
+                backButton: "← Retour à la Page d'Introduction du Service"
+            }
+        };
+
+        // 言語切り替え機能
+        function changeLanguage(lang) {
+            const translation = translations[lang];
+            if (!translation) return;
+
+            try {
+                // ページタイトルとメタ情報を更新
+                document.title = translation.pageTitle;
+                document.getElementById('page-title').textContent = translation.pageTitle;
+                document.getElementById('page-description').setAttribute('content', translation.pageDescription);
+
+                // 基本情報の更新
+                document.getElementById('mainTitle').textContent = translation.mainTitle;
+                document.getElementById('mainSubtitle').textContent = translation.mainSubtitle;
+                document.getElementById('serviceNatureTitle').textContent = translation.serviceNatureTitle;
+                
+                // サービス性質コンテンツの安全な処理
+                const serviceContentElement = document.getElementById('serviceNatureContent');
+                serviceContentElement.innerHTML = '';
+                const strongElement = document.createElement('strong');
+                strongElement.textContent = translation.serviceNatureContent.split(/[。.]/, 1)[0] + (translation.serviceNatureContent.includes('。') ? '。' : '.');
+                serviceContentElement.appendChild(strongElement);
+                
+                const remainingText = translation.serviceNatureContent.substring(strongElement.textContent.length);
+                if (remainingText) {
+                    serviceContentElement.appendChild(document.createTextNode(remainingText));
+                }
+                
+                // その他のテキストを安全に更新
+                const textElements = [
+                    'privacyHandlingTitle', 'privacyHandlingContent', 'collectDataTitle',
+                    'googleAccountEmail', 'googleAccountName', 'googleAccountImage',
+                    'usageDataProgress', 'usageDataHistory', 'usageDataLog', 'usageDataSettings',
+                    'paymentDataStripe', 'paymentDataSubscription', 'contactTitle', 'contactContent', 'backButton'
+                ];
+                
+                textElements.forEach(elementId => {
+                    const element = document.getElementById(elementId);
+                    if (element && translation[elementId]) {
+                        element.textContent = translation[elementId];
+                    }
+                });
+                
+                // 強調表示が必要な要素
+                const highlightElements = [
+                    { id: 'googleAccountTitle', key: 'googleAccountTitle' },
+                    { id: 'usageDataTitle', key: 'usageDataTitle' },
+                    { id: 'paymentDataTitle', key: 'paymentDataTitle' }
+                ];
+                
+                highlightElements.forEach(item => {
+                    const element = document.getElementById(item.id);
+                    if (element && translation[item.key]) {
+                        element.innerHTML = '<strong class="highlight">' + translation[item.key] + '</strong>';
+                    }
+                });
+                
+                // 利用目的リストの更新
+                const usagePurposeElement = document.getElementById('usagePurposeTitle');
+                if (usagePurposeElement) {
+                    usagePurposeElement.textContent = translation.usagePurposeTitle;
+                }
+                
+                for (let i = 1; i <= 8; i++) {
+                    const element = document.getElementById('usagePurpose' + i);
+                    if (element && translation['usagePurpose' + i]) {
+                        element.textContent = translation['usagePurpose' + i];
+                    }
+                }
+                
+                // 連絡先情報の安全な更新
+                const contactInfoElement = document.getElementById('contactInfo');
+                if (contactInfoElement && translation.contactInfo) {
+                    contactInfoElement.innerHTML = translation.contactInfo.replace(/\n/g, '<br>');
+                }
+
+                // 言語選択を保存
+                localStorage.setItem('selectedLanguage', lang);
+                
+                // HTML lang属性を更新
+                document.documentElement.lang = lang;
+            } catch (error) {
+                console.error('Language change error:', error);
+                // エラーが発生した場合は日本語にフォールバック
+                if (lang !== 'ja') {
+                    changeLanguage('ja');
+                }
+            }
+        }
+
+        // ページ読み込み時の処理
+        document.addEventListener('DOMContentLoaded', function() {
+            const languageSelect = document.getElementById('languageSelect');
+            
+            // 保存された言語を復元
+            const savedLanguage = localStorage.getItem('selectedLanguage') || 'ja';
+            languageSelect.value = savedLanguage;
+            changeLanguage(savedLanguage);
+
+            // 言語変更イベントリスナーを追加
+            languageSelect.addEventListener('change', function() {
+                changeLanguage(this.value);
+            });
+        });
+    </script>
 </body>
 </html>

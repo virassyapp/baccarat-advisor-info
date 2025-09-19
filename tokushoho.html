@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>特定商取引法に基づく表示 | バカラパターン統計学習システム</title>
+    <title id="page-title">特定商取引法に基づく表示 | バカラパターン統計学習システム</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <style>
         * {
@@ -31,6 +31,44 @@
                 radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
                 radial-gradient(circle at 80% 20%, rgba(255, 107, 107, 0.15) 0%, transparent 50%);
             z-index: -1;
+        }
+
+        /* Language Switcher */
+        .language-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 12px;
+        }
+
+        .language-select {
+            background: transparent;
+            color: white;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .language-select:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .language-select:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.5);
+        }
+
+        .language-select option {
+            background: #1f2937;
+            color: white;
         }
 
         .container {
@@ -251,6 +289,11 @@
         }
 
         @media (max-width: 768px) {
+            .language-switcher {
+                top: 10px;
+                right: 10px;
+            }
+
             .container {
                 padding: 20px 15px;
             }
@@ -286,21 +329,33 @@
     </style>
 </head>
 <body>
+    <!-- Language Switcher -->
+    <div class="language-switcher">
+        <select id="languageSelect" class="language-select">
+            <option value="ja">🇯🇵 日本語</option>
+            <option value="en">🇺🇸 English</option>
+            <option value="zh">🇨🇳 中文</option>
+            <option value="ko">🇰🇷 한국어</option>
+            <option value="es">🇪🇸 Español</option>
+            <option value="fr">🇫🇷 Français</option>
+        </select>
+    </div>
+
     <div class="container">
         <div class="header">
-            <h1 class="title">特定商取引法に基づく表示</h1>
-            <p class="subtitle">バカラパターン統計学習システム</p>
+            <h1 class="title" id="mainTitle">特定商取引法に基づく表示</h1>
+            <p class="subtitle" id="mainSubtitle">バカラパターン統計学習システム</p>
         </div>
 
         <div class="content-card">
-            <!-- 教育目的・非賭博の明記 -->
+            <!-- サービスの性質について -->
             <div class="educational-notice">
-                <h3>サービスの性質について</h3>
-                <p>
+                <h3 id="serviceNatureTitle">サービスの性質について</h3>
+                <p id="serviceNatureDesc1">
                     <strong>本サービスは統計学習・教育目的のシミュレーションツールです。</strong>
                     実際の賭博行為や金銭の授受は一切行いません。バカラゲームのパターン分析手法を学習するための教材として提供しております。
                 </p>
-                <p>
+                <p id="serviceNatureDesc2">
                     当サービスはオンラインカジノや賭博サイトではなく、純粋な統計分析・学習ツールであり、
                     決済代行サービス（Stripe）の禁止業種には該当いたしません。
                 </p>
@@ -308,80 +363,80 @@
 
             <!-- 事業者情報 -->
             <div class="section">
-                <h2 class="section-title">事業者情報</h2>
+                <h2 class="section-title" id="businessInfoTitle">事業者情報</h2>
                 <div class="section-content">
                     <div class="info-row">
-                        <div class="info-label">事業者名</div>
-                        <div class="info-value">【事業者名を記載】</div>
+                        <div class="info-label" id="businessNameLabel">事業者名</div>
+                        <div class="info-value" id="businessNameValue">【事業者名を記載】</div>
                     </div>
                     <div class="info-row">
-                        <div class="info-label">代表者名</div>
-                        <div class="info-value">【代表者名を記載】</div>
+                        <div class="info-label" id="representativeLabel">代表者名</div>
+                        <div class="info-value" id="representativeValue">【代表者名を記載】</div>
                     </div>
                     <div class="info-row">
-                        <div class="info-label">所在地</div>
-                        <div class="info-value">【都道府県・市区町村・番地を記載】</div>
+                        <div class="info-label" id="addressLabel">所在地</div>
+                        <div class="info-value" id="addressValue">【都道府県・市区町村・番地を記載】</div>
                     </div>
                     <div class="info-row">
-                        <div class="info-label">連絡先メール</div>
-                        <div class="info-value">【メールアドレスを記載】</div>
+                        <div class="info-label" id="contactEmailLabel">連絡先メール</div>
+                        <div class="info-value" id="contactEmailValue">【メールアドレスを記載】</div>
                     </div>
                     <div class="info-row">
-                        <div class="info-label">事業内容</div>
-                        <div class="info-value">統計分析ソフトウェアの開発・提供</div>
+                        <div class="info-label" id="businessContentLabel">事業内容</div>
+                        <div class="info-value" id="businessContentValue">統計分析ソフトウェアの開発・提供</div>
                     </div>
                 </div>
             </div>
 
             <!-- サービス情報 -->
             <div class="section">
-                <h2 class="section-title">提供サービス</h2>
+                <h2 class="section-title" id="serviceInfoTitle">提供サービス</h2>
                 <div class="section-content">
                     <div class="info-row">
-                        <div class="info-label">サービス名</div>
-                        <div class="info-value">バカラパターン統計学習システム（プレミアム版）</div>
+                        <div class="info-label" id="serviceNameLabel">サービス名</div>
+                        <div class="info-value" id="serviceNameValue">バカラパターン統計学習システム（プレミアム版）</div>
                     </div>
                     <div class="info-row">
-                        <div class="info-label">サービス内容</div>
-                        <div class="info-value">
-                            バカラゲームの統計パターン分析、確率論学習、リスク管理理論の実践的学習システム<br>
-                            <strong>※実際の賭博行為は一切含まれません</strong>
+                        <div class="info-label" id="serviceContentLabel">サービス内容</div>
+                        <div class="info-value" id="serviceContentValue">
+                            バカラゲームの統計パターン分析、確率論学習、リスク管理理論の実践的学習システム <br>
+                            <strong id="noGamblingNote">※実際の賭博行為は一切含まれません</strong>
                         </div>
                     </div>
                     <div class="info-row">
-                        <div class="info-label">学習目的</div>
-                        <div class="info-value">統計学、確率論、データ分析手法の教育・学習</div>
+                        <div class="info-label" id="learningPurposeLabel">学習目的</div>
+                        <div class="info-value" id="learningPurposeValue">統計学、確率論、データ分析手法の教育・学習</div>
                     </div>
                 </div>
             </div>
 
             <!-- 料金情報 -->
             <div class="section">
-                <h2 class="section-title">料金・支払方法</h2>
+                <h2 class="section-title" id="pricingInfoTitle">料金・支払方法</h2>
                 <div class="price-table">
-                    <div class="price-header">
+                    <div class="price-header" id="pricingHeader">
                         統計学習システム利用料金
                     </div>
                     <div class="price-row">
                         <div class="price-item">
-                            <strong>月額料金</strong>
+                            <strong id="monthlyFeeLabel">月額料金</strong>
                         </div>
                         <div class="price-item">
-                            <strong>支払方法</strong>
+                            <strong id="paymentMethodLabel">支払方法</strong>
                         </div>
                         <div class="price-item">
-                            <strong>課金タイミング</strong>
+                            <strong id="billingTimingLabel">課金タイミング</strong>
                         </div>
                     </div>
                     <div class="price-row">
-                        <div class="price-item highlight">
+                        <div class="price-item highlight" id="priceAmount">
                             【料金を記載】円（税込）
                         </div>
-                        <div class="price-item">
+                        <div class="price-item" id="paymentMethodValue">
                             クレジットカード<br>
                             （Stripe決済システム）
                         </div>
-                        <div class="price-item">
+                        <div class="price-item" id="billingTimingValue">
                             登録時即時決済<br>
                             以降毎月自動更新
                         </div>
@@ -391,44 +446,44 @@
 
             <!-- サービス提供時期 -->
             <div class="section">
-                <h2 class="section-title">サービス提供時期</h2>
+                <h2 class="section-title" id="serviceTimingTitle">サービス提供時期</h2>
                 <div class="section-content">
                     <div class="info-row">
-                        <div class="info-label">利用開始</div>
-                        <div class="info-value">決済完了後、即座に学習システムの全機能をご利用いただけます</div>
+                        <div class="info-label" id="serviceStartLabel">利用開始</div>
+                        <div class="info-value" id="serviceStartValue">決済完了後、即座に学習システムの全機能をご利用いただけます</div>
                     </div>
                     <div class="info-row">
-                        <div class="info-label">サービス形態</div>
-                        <div class="info-value">Webベース学習アプリケーション（24時間365日アクセス可能）</div>
+                        <div class="info-label" id="serviceFormatLabel">サービス形態</div>
+                        <div class="info-value" id="serviceFormatValue">Webベース学習アプリケーション（24時間365日アクセス可能）</div>
                     </div>
                     <div class="info-row">
-                        <div class="info-label">利用環境</div>
-                        <div class="info-value">インターネット接続可能なデバイス（PC・スマートフォン・タブレット対応）</div>
+                        <div class="info-label" id="usageEnvironmentLabel">利用環境</div>
+                        <div class="info-value" id="usageEnvironmentValue">インターネット接続可能なデバイス（PC・スマートフォン・タブレット対応）</div>
                     </div>
                 </div>
             </div>
 
             <!-- 返品・キャンセルポリシー -->
             <div class="section">
-                <h2 class="section-title">返品・キャンセルポリシー</h2>
+                <h2 class="section-title" id="returnPolicyTitle">返品・キャンセルポリシー</h2>
                 <div class="section-content">
                     <div class="info-row">
-                        <div class="info-label">解約について</div>
-                        <div class="info-value">
+                        <div class="info-label" id="cancellationLabel">解約について</div>
+                        <div class="info-value" id="cancellationValue">
                             お客様ご自身でいつでもサブスクリプションの解約が可能です。<br>
                             解約手続後は次回請求日以降、プレミアム機能が利用できなくなります。
                         </div>
                     </div>
                     <div class="info-row">
-                        <div class="info-label">返金について</div>
-                        <div class="info-value">
+                        <div class="info-label" id="refundLabel">返金について</div>
+                        <div class="info-value" id="refundValue">
                             デジタル教材の性質上、原則として返金は承っておりません。<br>
                             ただし、システム障害等、当社の責任による場合は個別に対応いたします。
                         </div>
                     </div>
                     <div class="info-row">
-                        <div class="info-label">クーリングオフ</div>
-                        <div class="info-value">
+                        <div class="info-label" id="coolingOffLabel">クーリングオフ</div>
+                        <div class="info-value" id="coolingOffValue">
                             当サービスは継続的役務提供に該当するため、特定商取引法に基づくクーリングオフの対象外です。
                         </div>
                     </div>
@@ -437,22 +492,22 @@
 
             <!-- 重要な注意事項 -->
             <div class="important-notice">
-                <h3>サービスの合法性について</h3>
-                <p>
+                <h3 id="legalityTitle">サービスの適法性について</h3>
+                <p id="legalityDesc1">
                     <strong>本サービスは賭博ではありません。</strong>
                     統計学習・教育目的のシミュレーションシステムであり、実際の金銭の授受や賭博行為は一切行いません。
                 </p>
-                <p>
-                    <strong>当サービスの特徴：</strong>
+                <p id="legalityDesc2">
+                    <strong id="serviceCharacteristicsTitle">当サービスの特徴：</strong>
                 </p>
-                <p>
+                <p id="serviceCharacteristics">
                     • 純粋な統計分析・学習ツール<br>
                     • 実際の賭博サイトではない<br>
                     • 金銭の授受を行わない教育システム<br>
                     • オンラインカジノ等の禁止業種には該当しない<br>
                     • 確率論・統計学の学習が目的
                 </p>
-                <p>
+                <p id="legalityDesc3">
                     本サービスは教育・学習目的で提供されており、実際のギャンブルへの参加を推奨するものではありません。
                     ギャンブル依存症の予防・啓発に努め、健全な統計学習環境を提供いたします。
                 </p>
@@ -460,18 +515,448 @@
 
             <!-- お問い合わせ -->
             <div class="contact-info">
-                <h4>お問い合わせ</h4>
-                <p>
+                <h4 id="contactTitle">お問い合わせ</h4>
+                <p id="contactDescription">
                     ご不明な点がございましたら、下記メールアドレスまでお気軽にお問い合わせください。<br>
-                    <strong>【サポートメールアドレスを記載】</strong><br>
-                    営業時間：平日10:00-18:00（土日祝日除く）
+                    <strong id="supportEmailPlaceholder">【サポートメールアドレスを記載】</strong><br>
+                    <span id="businessHours">営業時間：平日10:00-18:00（土日祝日除く）</span>
                 </p>
             </div>
 
-            <a href="./index.html" class="back-button">
-                ← サービス紹介ページに戻る
+            <a href="./index.html" class="back-button" id="backButton">
+                ← <span id="backButtonText">サービス紹介ページに戻る</span>
             </a>
         </div>
     </div>
+
+    <script>
+        // 翻訳データ
+        const translations = {
+            ja: {
+                pageTitle: "特定商取引法に基づく表示 | バカラパターン統計学習システム",
+                mainTitle: "特定商取引法に基づく表示",
+                mainSubtitle: "バカラパターン統計学習システム",
+                serviceNatureTitle: "サービスの性質について",
+                serviceNatureDesc1: "本サービスは統計学習・教育目的のシミュレーションツールです。実際の賭博行為や金銭の授受は一切行いません。バカラゲームのパターン分析手法を学習するための教材として提供しております。",
+                serviceNatureDesc2: "当サービスはオンラインカジノや賭博サイトではなく、純粋な統計分析・学習ツールであり、決済代行サービス（Stripe）の禁止業種には該当いたしません。",
+                businessInfoTitle: "事業者情報",
+                businessNameLabel: "事業者名",
+                businessNameValue: "【事業者名を記載】",
+                representativeLabel: "代表者名",
+                representativeValue: "【代表者名を記載】",
+                addressLabel: "所在地",
+                addressValue: "【都道府県・市区町村・番地を記載】",
+                contactEmailLabel: "連絡先メール",
+                contactEmailValue: "【メールアドレスを記載】",
+                businessContentLabel: "事業内容",
+                businessContentValue: "統計分析ソフトウェアの開発・提供",
+                serviceInfoTitle: "提供サービス",
+                serviceNameLabel: "サービス名",
+                serviceNameValue: "バカラパターン統計学習システム（プレミアム版）",
+                serviceContentLabel: "サービス内容",
+                serviceContentValue: "バカラゲームの統計パターン分析、確率論学習、リスク管理理論の実践的学習システム",
+                noGamblingNote: "※実際の賭博行為は一切含まれません",
+                learningPurposeLabel: "学習目的",
+                learningPurposeValue: "統計学、確率論、データ分析手法の教育・学習",
+                pricingInfoTitle: "料金・支払方法",
+                pricingHeader: "統計学習システム利用料金",
+                monthlyFeeLabel: "月額料金",
+                paymentMethodLabel: "支払方法",
+                billingTimingLabel: "課金タイミング",
+                priceAmount: "【料金を記載】円（税込）",
+                paymentMethodValue: "クレジットカード（Stripe決済システム）",
+                billingTimingValue: "登録時即時決済　以降毎月自動更新",
+                serviceTimingTitle: "サービス提供時期",
+                serviceStartLabel: "利用開始",
+                serviceStartValue: "決済完了後、即座に学習システムの全機能をご利用いただけます",
+                serviceFormatLabel: "サービス形態",
+                serviceFormatValue: "Webベース学習アプリケーション（24時間365日アクセス可能）",
+                usageEnvironmentLabel: "利用環境",
+                usageEnvironmentValue: "インターネット接続可能なデバイス（PC・スマートフォン・タブレット対応）",
+                returnPolicyTitle: "返品・キャンセルポリシー",
+                cancellationLabel: "解約について",
+                cancellationValue: "お客様ご自身でいつでもサブスクリプションの解約が可能です。解約手続後は次回請求日以降、プレミアム機能が利用できなくなります。",
+                refundLabel: "返金について",
+                refundValue: "デジタル教材の性質上、原則として返金は承っておりません。ただし、システム障害等、当社の責任による場合は個別に対応いたします。",
+                coolingOffLabel: "クーリングオフ",
+                coolingOffValue: "当サービスは継続的役務提供に該当するため、特定商取引法に基づくクーリングオフの対象外です。",
+                legalityTitle: "サービスの適法性について",
+                legalityDesc1: "本サービスは賭博ではありません。統計学習・教育目的のシミュレーションシステムであり、実際の金銭の授受や賭博行為は一切行いません。",
+                legalityDesc2: "当サービスの特徴：",
+                serviceCharacteristicsTitle: "当サービスの特徴：",
+                serviceCharacteristics: "• 純粋な統計分析・学習ツール\n• 実際の賭博サイトではない\n• 金銭の授受を行わない教育システム\n• オンラインカジノ等の禁止業種には該当しない\n• 確率論・統計学の学習が目的",
+                legalityDesc3: "本サービスは教育・学習目的で提供されており、実際のギャンブルへの参加を推奨するものではありません。ギャンブル依存症の予防・啓発に努め、健全な統計学習環境を提供いたします。",
+                contactTitle: "お問い合わせ",
+                contactDescription: "ご不明な点がございましたら、下記メールアドレスまでお気軽にお問い合わせください。",
+                supportEmailPlaceholder: "【サポートメールアドレスを記載】",
+                businessHours: "営業時間：平日10:00-18:00（土日祝日除く）",
+                backButtonText: "サービス紹介ページに戻る"
+            },
+            en: {
+                pageTitle: "Commercial Transaction Act Disclosure | Baccarat Pattern Statistical Learning System",
+                mainTitle: "Commercial Transaction Act Disclosure",
+                mainSubtitle: "Baccarat Pattern Statistical Learning System",
+                serviceNatureTitle: "About Service Nature",
+                serviceNatureDesc1: "This service is a simulation tool for statistical learning and educational purposes. No actual gambling or monetary transactions are involved. It is provided as educational material for learning baccarat game pattern analysis methods.",
+                serviceNatureDesc2: "This service is not an online casino or gambling site, but a pure statistical analysis and learning tool, and does not fall under prohibited businesses for payment processing services (Stripe).",
+                businessInfoTitle: "Business Information",
+                businessNameLabel: "Business Name",
+                businessNameValue: "[Business Name to be Listed]",
+                representativeLabel: "Representative",
+                representativeValue: "[Representative Name to be Listed]",
+                addressLabel: "Address",
+                addressValue: "[Prefecture, City, Address to be Listed]",
+                contactEmailLabel: "Contact Email",
+                contactEmailValue: "[Email Address to be Listed]",
+                businessContentLabel: "Business Content",
+                businessContentValue: "Development and provision of statistical analysis software",
+                serviceInfoTitle: "Service Offered",
+                serviceNameLabel: "Service Name",
+                serviceNameValue: "Baccarat Pattern Statistical Learning System (Premium Version)",
+                serviceContentLabel: "Service Content",
+                serviceContentValue: "Statistical pattern analysis of baccarat games, probability theory learning, practical learning system for risk management theory",
+                noGamblingNote: "※No actual gambling activities included",
+                learningPurposeLabel: "Learning Purpose",
+                learningPurposeValue: "Education and learning of statistics, probability theory, data analysis methods",
+                pricingInfoTitle: "Pricing & Payment Methods",
+                pricingHeader: "Statistical Learning System Usage Fee",
+                monthlyFeeLabel: "Monthly Fee",
+                paymentMethodLabel: "Payment Method",
+                billingTimingLabel: "Billing Timing",
+                priceAmount: "$[Price to be Listed] (Tax Included)",
+                paymentMethodValue: "Credit Card (Stripe Payment System)",
+                billingTimingValue: "Immediate payment upon registration, Monthly auto-renewal thereafter",
+                serviceTimingTitle: "Service Provision Period",
+                serviceStartLabel: "Service Start",
+                serviceStartValue: "You can use all learning system functions immediately after payment completion",
+                serviceFormatLabel: "Service Format",
+                serviceFormatValue: "Web-based learning application (24/7 access available)",
+                usageEnvironmentLabel: "Usage Environment",
+                usageEnvironmentValue: "Internet-connected devices (PC, smartphone, tablet compatible)",
+                returnPolicyTitle: "Return & Cancellation Policy",
+                cancellationLabel: "About Cancellation",
+                cancellationValue: "Customers can cancel their subscription at any time. After cancellation procedures, premium functions will not be available from the next billing date.",
+                refundLabel: "About Refunds",
+                refundValue: "Due to the nature of digital educational materials, refunds are not generally accepted. However, we will respond individually in cases of system failures or other issues caused by our responsibility.",
+                coolingOffLabel: "Cooling-off Period",
+                coolingOffValue: "This service corresponds to continuous service provision, so it is excluded from cooling-off under the Commercial Transaction Act.",
+                legalityTitle: "About Service Legality",
+                legalityDesc1: "This service is not gambling. It is a simulation system for statistical learning and educational purposes, and does not involve actual monetary transactions or gambling activities.",
+                legalityDesc2: "Characteristics of our service:",
+                serviceCharacteristicsTitle: "Characteristics of our service:",
+                serviceCharacteristics: "• Pure statistical analysis and learning tool\n• Not an actual gambling site\n• Educational system with no monetary transactions\n• Does not fall under prohibited businesses like online casinos\n• Purpose is learning probability theory and statistics",
+                legalityDesc3: "This service is provided for educational and learning purposes and does not recommend participation in actual gambling. We strive to prevent and raise awareness about gambling addiction and provide a healthy statistical learning environment.",
+                contactTitle: "Contact",
+                contactDescription: "If you have any questions, please feel free to contact us at the email address below.",
+                supportEmailPlaceholder: "[Support Email Address to be Listed]",
+                businessHours: "Business Hours: Weekdays 10:00-18:00 (excluding weekends and holidays)",
+                backButtonText: "Back to Service Introduction Page"
+            },
+            zh: {
+                pageTitle: "特定商业交易法表示 | 百家乐模式统计学习系统",
+                mainTitle: "特定商业交易法表示",
+                mainSubtitle: "百家乐模式统计学习系统",
+                serviceNatureTitle: "关于服务性质",
+                serviceNatureDesc1: "本服务是统计学习·教育目的的模拟工具。不涉及实际赌博行为或金钱交易。作为学习百家乐游戏模式分析手法的教材提供。",
+                serviceNatureDesc2: "当前服务不是在线赌场或赌博网站，而是纯粹的统计分析·学习工具，不属于支付代行服务（Stripe）的禁止业种。",
+                businessInfoTitle: "事业者信息",
+                businessNameLabel: "事业者名",
+                businessNameValue: "【事业者名记载】",
+                representativeLabel: "代表者名",
+                representativeValue: "【代表者名记载】",
+                addressLabel: "所在地",
+                addressValue: "【都道府县·市区町村·番地记载】",
+                contactEmailLabel: "联系邮箱",
+                contactEmailValue: "【邮箱地址记载】",
+                businessContentLabel: "事业内容",
+                businessContentValue: "统计分析软件的开发·提供",
+                serviceInfoTitle: "提供服务",
+                serviceNameLabel: "服务名",
+                serviceNameValue: "百家乐模式统计学习系统（高级版）",
+                serviceContentLabel: "服务内容",
+                serviceContentValue: "百家乐游戏的统计模式分析、概率论学习、风险管理理论的实践学习系统",
+                noGamblingNote: "※不包含实际赌博行为",
+                learningPurposeLabel: "学习目的",
+                learningPurposeValue: "统计学、概率论、数据分析手法的教育·学习",
+                pricingInfoTitle: "费用·支付方法",
+                pricingHeader: "统计学习系统使用费",
+                monthlyFeeLabel: "月费",
+                paymentMethodLabel: "支付方法",
+                billingTimingLabel: "收费时机",
+                priceAmount: "【费用记载】元（含税）",
+                paymentMethodValue: "信用卡（Stripe支付系统）",
+                billingTimingValue: "注册时即时支付　此后每月自动更新",
+                serviceTimingTitle: "服务提供时期",
+                serviceStartLabel: "使用开始",
+                serviceStartValue: "支付完成后，可即时使用学习系统的全部功能",
+                serviceFormatLabel: "服务形态",
+                serviceFormatValue: "Web基础学习应用程序（24小时365天可访问）",
+                usageEnvironmentLabel: "使用环境",
+                usageEnvironmentValue: "可连接互联网的设备（PC·智能手机·平板电脑对应）",
+                returnPolicyTitle: "退货·取消政策",
+                cancellationLabel: "关于解约",
+                cancellationValue: "客户自身随时可以解约订阅。解约手续后从下次请求日起，高级功能将无法使用。",
+                refundLabel: "关于退款",
+                refundValue: "由于数字教材的性质，原则上不承认退款。但是，系统故障等当公司责任的情况下会个别对应。",
+                coolingOffLabel: "冷静期",
+                coolingOffValue: "当前服务相当于持续性服务提供，因此不属于特定商业交易法基础的冷静期对象。",
+                legalityTitle: "关于服务的适法性",
+                legalityDesc1: "本服务不是赌博。是统计学习·教育目的的模拟系统，不进行实际的金钱授受或赌博行为。",
+                legalityDesc2: "当前服务的特征：",
+                serviceCharacteristicsTitle: "当前服务的特征：",
+                serviceCharacteristics: "• 纯粹的统计分析·学习工具\n• 不是实际的赌博网站\n• 不进行金钱授受的教育系统\n• 不属于在线赌场等禁止业种\n• 以概率论·统计学的学习为目的",
+                legalityDesc3: "本服务以教育·学习目的提供，不推荐参加实际赌博。努力预防·启发赌博依存症，提供健全的统计学习环境。",
+                contactTitle: "咨询",
+                contactDescription: "如有不明之处，请随时联系下记邮箱地址。",
+                supportEmailPlaceholder: "【支持邮箱地址记载】",
+                businessHours: "营业时间：平日10:00-18:00（土日祝日除外）",
+                backButtonText: "返回服务介绍页面"
+            },
+            ko: {
+                pageTitle: "특정상거래법에 의한 표시 | 바카라패턴 통계학습 시스템",
+                mainTitle: "특정상거래법에 의한 표시",
+                mainSubtitle: "바카라패턴 통계학습 시스템",
+                serviceNatureTitle: "서비스의 성질에 대해",
+                serviceNatureDesc1: "본 서비스는 통계학습·교육목적의 시뮬레이션 도구입니다. 실제 도박행위나 금전의 수수는 일체 하지 않습니다. 바카라게임의 패턴분석 기법을 학습하기 위한 교재로서 제공하고 있습니다.",
+                serviceNatureDesc2: "당 서비스는 온라인카지노나 도박사이트가 아니라, 순수한 통계분석·학습도구이며, 결제대행서비스(Stripe)의 금지업종에는 해당하지 않습니다.",
+                businessInfoTitle: "사업자정보",
+                businessNameLabel: "사업자명",
+                businessNameValue: "【사업자명을 기재】",
+                representativeLabel: "대표자명",
+                representativeValue: "【대표자명을 기재】",
+                addressLabel: "소재지",
+                addressValue: "【도도부현·시구정촌·번지를 기재】",
+                contactEmailLabel: "연락처 메일",
+                contactEmailValue: "【메일주소를 기재】",
+                businessContentLabel: "사업내용",
+                businessContentValue: "통계분석 소프트웨어의 개발·제공",
+                serviceInfoTitle: "제공서비스",
+                serviceNameLabel: "서비스명",
+                serviceNameValue: "바카라패턴 통계학습시스템(프리미엄판)",
+                serviceContentLabel: "서비스내용",
+                serviceContentValue: "바카라게임의 통계패턴 분석, 확률론 학습, 리스크관리 이론의 실천적 학습시스템",
+                noGamblingNote: "※실제 도박행위는 일체 포함되지 않습니다",
+                learningPurposeLabel: "학습목적",
+                learningPurposeValue: "통계학, 확률론, 데이터분석 기법의 교육·학습",
+                pricingInfoTitle: "요금·지불방법",
+                pricingHeader: "통계학습시스템 이용요금",
+                monthlyFeeLabel: "월액요금",
+                paymentMethodLabel: "지불방법",
+                billingTimingLabel: "과금타이밍",
+                priceAmount: "【요금을 기재】원（세금포함）",
+                paymentMethodValue: "신용카드（Stripe결제시스템）",
+                billingTimingValue: "등록시 즉시결제　이후 매월 자동갱신",
+                serviceTimingTitle: "서비스제공시기",
+                serviceStartLabel: "이용개시",
+                serviceStartValue: "결제완료 후, 즉시 학습시스템의 전기능을 이용하실 수 있습니다",
+                serviceFormatLabel: "서비스형태",
+                serviceFormatValue: "Web베이스 학습애플리케이션（24시간365일 액세스가능）",
+                usageEnvironmentLabel: "이용환경",
+                usageEnvironmentValue: "인터넷접속 가능한 디바이스（PC·스마트폰·태블릿 대응）",
+                returnPolicyTitle: "반품·캔슬정책",
+                cancellationLabel: "해약에 대해",
+                cancellationValue: "고객님 자신이 언제든지 구독의 해약이 가능합니다. 해약수속 후는 다음 청구일 이후, 프리미엄기능이 이용할 수 없게 됩니다.",
+                refundLabel: "환불에 대해",
+                refundValue: "디지털교재의 성질상, 원칙적으로 환불은 승낙하지 않습니다. 단, 시스템장애 등, 당사의 책임에 의한 경우는 개별적으로 대응합니다.",
+                coolingOffLabel: "쿨링오프",
+                coolingOffValue: "당 서비스는 계속적 역무제공에 해당하기 때문에, 특정상거래법에 기초한 쿨링오프의 대상외입니다.",
+                legalityTitle: "서비스의 적법성에 대해",
+                legalityDesc1: "본 서비스는 도박이 아닙니다. 통계학습·교육목적의 시뮬레이션시스템이며, 실제 금전의 수수나 도박행위는 일체 하지 않습니다.",
+                legalityDesc2: "당 서비스의 특징:",
+                serviceCharacteristicsTitle: "당 서비스의 특징:",
+                serviceCharacteristics: "• 순수한 통계분석·학습도구\n• 실제 도박사이트가 아님\n• 금전의 수수를 하지 않는 교육시스템\n• 온라인카지노 등의 금지업종에는 해당하지 않음\n• 확률론·통계학의 학습이 목적",
+                legalityDesc3: "본 서비스는 교육·학습목적으로 제공되고 있으며, 실제 갬블링으로의 참가를 추천하는 것이 아닙니다. 갬블링의존증의 예방·계발에 노력하고, 건전한 통계학습환경을 제공합니다.",
+                contactTitle: "문의",
+                contactDescription: "불분명한 점이 있으시면, 하기 메일주소까지 부담없이 문의해 주세요.",
+                supportEmailPlaceholder: "【서포트메일주소를 기재】",
+                businessHours: "영업시간：평일10:00-18:00（토일공휴일 제외）",
+                backButtonText: "서비스소개페이지로 돌아가기"
+            },
+            es: {
+                pageTitle: "Ley de Transacciones Comerciales | Sistema de Aprendizaje Estadístico de Patrones de Baccarat",
+                mainTitle: "Ley de Transacciones Comerciales",
+                mainSubtitle: "Sistema de Aprendizaje Estadístico de Patrones de Baccarat",
+                serviceNatureTitle: "Sobre la Naturaleza del Servicio",
+                serviceNatureDesc1: "Este servicio es una herramienta de simulación para aprendizaje estadístico y propósitos educativos. No involucra actividades de apuestas reales ni transacciones monetarias. Se proporciona como material educativo para aprender métodos de análisis de patrones del juego de baccarat.",
+                serviceNatureDesc2: "Este servicio no es un casino en línea o sitio de apuestas, sino una herramienta pura de análisis estadístico y aprendizaje, y no corresponde a los negocios prohibidos del servicio de procesamiento de pagos (Stripe).",
+                businessInfoTitle: "Información Comercial",
+                businessNameLabel: "Nombre Comercial",
+                businessNameValue: "[Nombre Comercial a Incluir]",
+                representativeLabel: "Representante",
+                representativeValue: "[Nombre del Representante a Incluir]",
+                addressLabel: "Dirección",
+                addressValue: "[Prefectura, Ciudad, Dirección a Incluir]",
+                contactEmailLabel: "Email de Contacto",
+                contactEmailValue: "[Dirección de Email a Incluir]",
+                businessContentLabel: "Contenido del Negocio",
+                businessContentValue: "Desarrollo y provisión de software de análisis estadístico",
+                serviceInfoTitle: "Servicio Ofrecido",
+                serviceNameLabel: "Nombre del Servicio",
+                serviceNameValue: "Sistema de Aprendizaje Estadístico de Patrones de Baccarat (Versión Premium)",
+                serviceContentLabel: "Contenido del Servicio",
+                serviceContentValue: "Análisis de patrones estadísticos de juegos de baccarat, aprendizaje de teoría de probabilidades, sistema de aprendizaje práctico de teoría de gestión de riesgos",
+                noGamblingNote: "※No incluye actividades de apuestas reales",
+                learningPurposeLabel: "Propósito de Aprendizaje",
+                learningPurposeValue: "Educación y aprendizaje de estadísticas, teoría de probabilidades, métodos de análisis de datos",
+                pricingInfoTitle: "Precios y Métodos de Pago",
+                pricingHeader: "Tarifa de Uso del Sistema de Aprendizaje Estadístico",
+                monthlyFeeLabel: "Tarifa Mensual",
+                paymentMethodLabel: "Método de Pago",
+                billingTimingLabel: "Momento de Facturación",
+                priceAmount: "€[Precio a Incluir] (Impuestos Incluidos)",
+                paymentMethodValue: "Tarjeta de Crédito (Sistema de Pago Stripe)",
+                billingTimingValue: "Pago inmediato al registrarse　Renovación automática mensual posterior",
+                serviceTimingTitle: "Período de Provisión del Servicio",
+                serviceStartLabel: "Inicio del Servicio",
+                serviceStartValue: "Puede usar todas las funciones del sistema de aprendizaje inmediatamente después de completar el pago",
+                serviceFormatLabel: "Formato del Servicio",
+                serviceFormatValue: "Aplicación de aprendizaje basada en Web (acceso 24/7 disponible)",
+                usageEnvironmentLabel: "Entorno de Uso",
+                usageEnvironmentValue: "Dispositivos conectados a Internet (compatible con PC, smartphone, tablet)",
+                returnPolicyTitle: "Política de Devoluciones y Cancelaciones",
+                cancellationLabel: "Sobre Cancelación",
+                cancellationValue: "Los clientes pueden cancelar su suscripción en cualquier momento. Después de los procedimientos de cancelación, las funciones premium no estarán disponibles desde la próxima fecha de facturación.",
+                refundLabel: "Sobre Reembolsos",
+                refundValue: "Debido a la naturaleza de los materiales educativos digitales, generalmente no se aceptan reembolsos. Sin embargo, responderemos individualmente en casos de fallas del sistema u otros problemas causados por nuestra responsabilidad.",
+                coolingOffLabel: "Período de Reflexión",
+                coolingOffValue: "Este servicio corresponde a provisión de servicio continuo, por lo que está excluido del período de reflexión bajo la Ley de Transacciones Comerciales.",
+                legalityTitle: "Sobre la Legalidad del Servicio",
+                legalityDesc1: "Este servicio no es apuestas. Es un sistema de simulación para aprendizaje estadístico y propósitos educativos, y no involucra transacciones monetarias reales o actividades de apuestas.",
+                legalityDesc2: "Características de nuestro servicio:",
+                serviceCharacteristicsTitle: "Características de nuestro servicio:",
+                serviceCharacteristics: "• Herramienta pura de análisis estadístico y aprendizaje\n• No es un sitio de apuestas real\n• Sistema educativo sin transacciones monetarias\n• No corresponde a negocios prohibidos como casinos en línea\n• El propósito es aprender teoría de probabilidades y estadísticas",
+                legalityDesc3: "Este servicio se proporciona para propósitos educativos y de aprendizaje y no recomienda participación en apuestas reales. Nos esforzamos por prevenir y crear conciencia sobre la adicción al juego y proporcionar un entorno de aprendizaje estadístico saludable.",
+                contactTitle: "Contacto",
+                contactDescription: "Si tiene alguna pregunta, no dude en contactarnos en la dirección de email a continuación.",
+                supportEmailPlaceholder: "[Dirección de Email de Soporte a Incluir]",
+                businessHours: "Horario Comercial: Días laborables 10:00-18:00 (excluyendo fines de semana y feriados)",
+                backButtonText: "Volver a la Página de Introducción del Servicio"
+            },
+            fr: {
+                pageTitle: "Loi sur les Transactions Commerciales | Système d'Apprentissage Statistique des Motifs de Baccarat",
+                mainTitle: "Loi sur les Transactions Commerciales",
+                mainSubtitle: "Système d'Apprentissage Statistique des Motifs de Baccarat",
+                serviceNatureTitle: "À propos de la Nature du Service",
+                serviceNatureDesc1: "Ce service est un outil de simulation à des fins d'apprentissage statistique et éducatives. Aucune activité de jeu réelle ni transaction monétaire n'est impliquée. Il est fourni comme matériel éducatif pour apprendre les méthodes d'analyse des motifs du jeu de baccarat.",
+                serviceNatureDesc2: "Ce service n'est pas un casino en ligne ou un site de jeu, mais un outil pur d'analyse statistique et d'apprentissage, et ne correspond pas aux activités interdites du service de traitement des paiements (Stripe).",
+                businessInfoTitle: "Informations Commerciales",
+                businessNameLabel: "Nom Commercial",
+                businessNameValue: "[Nom Commercial à Inclure]",
+                representativeLabel: "Représentant",
+                representativeValue: "[Nom du Représentant à Inclure]",
+                addressLabel: "Adresse",
+                addressValue: "[Préfecture, Ville, Adresse à Inclure]",
+                contactEmailLabel: "Email de Contact",
+                contactEmailValue: "[Adresse Email à Inclure]",
+                businessContentLabel: "Contenu Commercial",
+                businessContentValue: "Développement et fourniture de logiciels d'analyse statistique",
+                serviceInfoTitle: "Service Offert",
+                serviceNameLabel: "Nom du Service",
+                serviceNameValue: "Système d'Apprentissage Statistique des Motifs de Baccarat (Version Premium)",
+                serviceContentLabel: "Contenu du Service",
+                serviceContentValue: "Analyse des motifs statistiques des jeux de baccarat, apprentissage de la théorie des probabilités, système d'apprentissage pratique de la théorie de gestion des risques",
+                noGamblingNote: "※Aucune activité de jeu réelle incluse",
+                learningPurposeLabel: "Objectif d'Apprentissage",
+                learningPurposeValue: "Éducation et apprentissage des statistiques, théorie des probabilités, méthodes d'analyse de données",
+                pricingInfoTitle: "Tarifs et Méthodes de Paiement",
+                pricingHeader: "Frais d'Utilisation du Système d'Apprentissage Statistique",
+                monthlyFeeLabel: "Frais Mensuels",
+                paymentMethodLabel: "Méthode de Paiement",
+                billingTimingLabel: "Moment de Facturation",
+                priceAmount: "€[Prix à Inclure] (Taxes Comprises)",
+                paymentMethodValue: "Carte de Crédit (Système de Paiement Stripe)",
+                billingTimingValue: "Paiement immédiat lors de l'inscription　Renouvellement automatique mensuel par la suite",
+                serviceTimingTitle: "Période de Fourniture du Service",
+                serviceStartLabel: "Début du Service",
+                serviceStartValue: "Vous pouvez utiliser toutes les fonctions du système d'apprentissage immédiatement après avoir terminé le paiement",
+                serviceFormatLabel: "Format du Service",
+                serviceFormatValue: "Application d'apprentissage basée sur le Web (accès 24h/24 et 7j/7 disponible)",
+                usageEnvironmentLabel: "Environnement d'Utilisation",
+                usageEnvironmentValue: "Appareils connectés à Internet (compatible PC, smartphone, tablette)",
+                returnPolicyTitle: "Politique de Retour et d'Annulation",
+                cancellationLabel: "À propos de l'Annulation",
+                cancellationValue: "Les clients peuvent annuler leur abonnement à tout moment. Après les procédures d'annulation, les fonctions premium ne seront pas disponibles à partir de la prochaine date de facturation.",
+                refundLabel: "À propos des Remboursements",
+                refundValue: "En raison de la nature des matériaux éducatifs numériques, les remboursements ne sont généralement pas acceptés. Cependant, nous répondrons individuellement en cas de pannes système ou d'autres problèmes causés par notre responsabilité.",
+                coolingOffLabel: "Période de Réflexion",
+                coolingOffValue: "Ce service correspond à la fourniture de service continue, il est donc exclu de la période de réflexion sous la Loi sur les Transactions Commerciales.",
+                legalityTitle: "À propos de la Légalité du Service",
+                legalityDesc1: "Ce service n'est pas du jeu. C'est un système de simulation à des fins d'apprentissage statistique et éducatives, et n'implique pas de transactions monétaires réelles ou d'activités de jeu.",
+                legalityDesc2: "Caractéristiques de notre service:",
+                serviceCharacteristicsTitle: "Caractéristiques de notre service:",
+                serviceCharacteristics: "• Outil pur d'analyse statistique et d'apprentissage\n• Pas un site de jeu réel\n• Système éducatif sans transactions monétaires\n• Ne correspond pas aux activités interdites comme les casinos en ligne\n• L'objectif est d'apprendre la théorie des probabilités et les statistiques",
+                legalityDesc3: "Ce service est fourni à des fins éducatives et d'apprentissage et ne recommande pas la participation au jeu réel. Nous nous efforçons de prévenir et de sensibiliser sur l'addiction au jeu et de fournir un environnement d'apprentissage statistique sain.",
+                contactTitle: "Contact",
+                contactDescription: "Si vous avez des questions, n'hésitez pas à nous contacter à l'adresse email ci-dessous.",
+                supportEmailPlaceholder: "[Adresse Email de Support à Inclure]",
+                businessHours: "Heures d'Ouverture: Jours ouvrables 10:00-18:00 (excluant week-ends et jours fériés)",
+                backButtonText: "Retour à la Page d'Introduction du Service"
+            }
+        };
+
+        // 言語切り替え機能
+        function changeLanguage(lang) {
+            const translation = translations[lang];
+            if (!translation) return;
+
+            // ページタイトルとメタ情報を更新
+            document.title = translation.pageTitle;
+            document.getElementById('page-title').textContent = translation.pageTitle;
+
+            // 各要素のテキストを更新
+            const elements = [
+                'mainTitle', 'mainSubtitle', 'serviceNatureTitle', 'serviceNatureDesc1', 'serviceNatureDesc2',
+                'businessInfoTitle', 'businessNameLabel', 'businessNameValue', 'representativeLabel', 'representativeValue',
+                'addressLabel', 'addressValue', 'contactEmailLabel', 'contactEmailValue', 'businessContentLabel', 'businessContentValue',
+                'serviceInfoTitle', 'serviceNameLabel', 'serviceNameValue', 'serviceContentLabel', 'serviceContentValue',
+                'noGamblingNote', 'learningPurposeLabel', 'learningPurposeValue', 'pricingInfoTitle', 'pricingHeader',
+                'monthlyFeeLabel', 'paymentMethodLabel', 'billingTimingLabel', 'priceAmount', 'paymentMethodValue', 'billingTimingValue',
+                'serviceTimingTitle', 'serviceStartLabel', 'serviceStartValue', 'serviceFormatLabel', 'serviceFormatValue',
+                'usageEnvironmentLabel', 'usageEnvironmentValue', 'returnPolicyTitle', 'cancellationLabel', 'cancellationValue',
+                'refundLabel', 'refundValue', 'coolingOffLabel', 'coolingOffValue', 'legalityTitle', 'legalityDesc1',
+                'legalityDesc2', 'serviceCharacteristicsTitle', 'legalityDesc3', 'contactTitle', 'contactDescription',
+                'supportEmailPlaceholder', 'businessHours', 'backButtonText'
+            ];
+
+            elements.forEach(elementId => {
+                const element = document.getElementById(elementId);
+                if (element && translation[elementId]) {
+                    if (elementId === 'serviceCharacteristics') {
+                        element.innerHTML = translation[elementId].replace(/\n/g, '<br>');
+                    } else {
+                        element.textContent = translation[elementId];
+                    }
+                }
+            });
+
+            // 特別処理：serviceCharacteristics（箇条書き部分）
+            const serviceCharacteristics = document.getElementById('serviceCharacteristics');
+            if (serviceCharacteristics && translation.serviceCharacteristics) {
+                serviceCharacteristics.innerHTML = translation.serviceCharacteristics.replace(/\n/g, '<br>');
+            }
+
+            // 言語選択を保存
+            localStorage.setItem('selectedLanguage', lang);
+            
+            // HTML lang属性を更新
+            document.documentElement.lang = lang;
+        }
+
+        // ページ読み込み時の処理
+        document.addEventListener('DOMContentLoaded', function() {
+            const languageSelect = document.getElementById('languageSelect');
+            
+            // 保存された言語を復元
+            const savedLanguage = localStorage.getItem('selectedLanguage') || 'ja';
+            languageSelect.value = savedLanguage;
+            changeLanguage(savedLanguage);
+
+            // 言語変更イベントリスナーを追加
+            languageSelect.addEventListener('change', function() {
+                changeLanguage(this.value);
+            });
+        });
+    </script>
 </body>
 </html>
+                
